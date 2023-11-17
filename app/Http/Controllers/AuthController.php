@@ -40,7 +40,6 @@ class AuthController extends Controller
 
     }
 
-
     public function login(Request $request): JsonResponse
     {
         if(!Auth::attempt($request->only('email','password'))){
@@ -62,5 +61,13 @@ class AuthController extends Controller
                 'token_type' => $Bearer
             ],201);
 
+    }
+
+    public function logout(): JsonResponse
+    {
+        auth()->user()->tokens()->delete();
+
+        return response()
+            ->json(['message'=>'Cierre de sesión exitoso'],201);
     }
 }
