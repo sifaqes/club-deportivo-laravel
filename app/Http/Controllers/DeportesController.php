@@ -13,6 +13,7 @@ class DeportesController extends Controller
     public function index()
     {
         //
+        return Deportes::all();
     }
 
     /**
