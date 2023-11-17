@@ -70,4 +70,30 @@ class AuthController extends Controller
         return response()
             ->json(['message'=>'Cierre de sesión exitoso'],201);
     }
+
+    public function update(Request $request): JsonResponse
+    {
+        $user = auth()->user();
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+
+        if($request->get('password')){
+            $user->password = Hash::make($request->get('password'));
+        }
+
+        $user->save();
+        return response()
+            ->json(['message'=>'Usuario actualizado'],201);
+    }
+
+    public function delete(): JsonResponse
+    {
+        $user = auth()->user();
+        $user->tokens()->delete();
+        $user->delete();
+        return response()
+            ->json(['message'=>'Usuario eliminado'],201);
+    }
+
+
 }

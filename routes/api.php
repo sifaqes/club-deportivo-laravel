@@ -24,13 +24,16 @@ Route::post('register',[AuthController::class,'register']);
 
 Route::post('login',[AuthController::class,'login']);
 
+Route::get('refresh',[AuthController::class,'refresh']);
+
 Route::middleware('auth:sanctum')->group( function (){
 
     Route::get('deportes',[DeportesController::class,'index']);
 
+    Route::post('update',[AuthController::class,'update']);
+
     Route::get('logout',[AuthController::class,'logout']);
 
-    
 });
 
 
