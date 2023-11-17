@@ -28,9 +28,11 @@ Route::middleware('auth:sanctum')->group( function (){
 
     Route::get('deportes',[DeportesController::class,'index']);
 
-    Route::post('update',[AuthController::class,'update']);
+    Route::put('update',[AuthController::class,'update']);
 
     Route::get('logout',[AuthController::class,'logout']);
+
+    Route::delete('delete',[AuthController::class,'delete']);
 
 });
 

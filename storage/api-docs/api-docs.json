@@ -1,9 +1,14 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "L5 Swagger",
+        "title": "Prueba deporte",
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "localhost:8000"
+        }
+    ],
     "paths": {
         "/api/register": {
             "post": {
@@ -21,20 +26,20 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "NombreUsuario"
+                                        "example": "sifaqes"
                                     },
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "usuario@dominio.com"
+                                        "example": "sifaqes@gmail.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "contrasena"
+                                        "example": "12345678"
                                     },
                                     "password_confirmation": {
                                         "type": "string",
-                                        "example": "contrasena"
+                                        "example": "12345678"
                                     }
                                 },
                                 "type": "object"
@@ -81,11 +86,11 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "usuario@dominio.com"
+                                        "example": "sifaqes@gmail.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "contrasena"
+                                        "example": "12345678"
                                     }
                                 },
                                 "type": "object"
@@ -134,12 +139,12 @@
             }
         },
         "/api/logout": {
-            "post": {
+            "get": {
                 "tags": [
                     "CRUD Authentication"
                 ],
                 "summary": "Cerrar sesión y revocar token de autenticación",
-                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "operationId": "3f19b742e4ead13f81ba0d6c0d46ac1b",
                 "responses": {
                     "200": {
                         "description": "Cierre de sesión exitoso",
@@ -275,11 +280,34 @@
                 "tags": [
                     "CRUD Authentication"
                 ],
-                "summary": "Eliminar usuario y revocar tokens",
-                "operationId": "8f025ef38236d16fdd50df91a1f952e2",
+                "summary": "Delete user",
+                "description": "Delete a user and revoke access tokens",
+                "operationId": "deleteUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "Email of the user to be deleted",
+                                        "type": "string",
+                                        "example": "sifaqes@gmail.com"
+                                    },
+                                    "password": {
+                                        "description": "New password for the user (optional)",
+                                        "type": "string",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
-                    "200": {
-                        "description": "Usuario eliminado",
+                    "201": {
+                        "description": "User deleted successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -295,14 +323,14 @@
                         }
                     },
                     "401": {
-                        "description": "No autorizado",
+                        "description": "Unauthorized",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
+                                        "error": {
                                             "type": "string",
-                                            "example": "No autorizado"
+                                            "example": "Unauthenticated"
                                         }
                                     },
                                     "type": "object"
@@ -310,15 +338,15 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "Usuario no encontrado",
+                    "500": {
+                        "description": "Internal Server Error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
+                                        "error": {
                                             "type": "string",
-                                            "example": "Usuario no encontrado"
+                                            "example": "Internal Server Error"
                                         }
                                     },
                                     "type": "object"
@@ -326,12 +354,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         }
     }

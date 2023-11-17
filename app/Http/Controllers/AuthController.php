@@ -14,7 +14,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Info(
  *      version="1.0.0",
- *      title="L5 Swagger",
+ *      title="Prueba deporte",
  * )
  */
 class AuthController extends Controller
@@ -29,10 +29,10 @@ class AuthController extends Controller
      *         required=true,
      *         description="Datos para registrar un nuevo usuario",
      *         @OA\JsonContent(
-     *             @OA\Property(property="name", type="string", example="NombreUsuario"),
-     *             @OA\Property(property="email", type="string", format="email", example="usuario@dominio.com"),
-     *             @OA\Property(property="password", type="string", example="contrasena"),
-     *             @OA\Property(property="password_confirmation", type="string", example="contrasena")
+     *             @OA\Property(property="name", type="string", example="sifaqes"),
+     *             @OA\Property(property="email", type="string", format="email", example="sifaqes@gmail.com"),
+     *             @OA\Property(property="password", type="string", example="12345678"),
+     *             @OA\Property(property="password_confirmation", type="string", example="12345678")
      *         )
      *     ),
      *     @OA\Response(
@@ -69,8 +69,6 @@ class AuthController extends Controller
 
         $token = $user-> createToken('auth_token')->plainTextToken;
 
-        //$Bearer = $user-> createToken('token_type')->plainTextToken;
-
         return response()
             ->json(['user'=>$user,'token'=>$token],201);
 
@@ -85,8 +83,8 @@ class AuthController extends Controller
      *         required=true,
      *         description="Credenciales de inicio de sesión",
      *         @OA\JsonContent(
-     *             @OA\Property(property="email", type="string", example="usuario@dominio.com"),
-     *             @OA\Property(property="password", type="string", example="contrasena")
+     *             @OA\Property(property="email", type="string", example="sifaqes@gmail.com"),
+     *             @OA\Property(property="password", type="string", example="12345678")
      *         )
      *     ),
      *     @OA\Response(
@@ -105,8 +103,6 @@ class AuthController extends Controller
      *         )
      *     )
      * )
-     *
-     * Iniciar sesión y obtener token de autenticación.
      *
      * @param Request $request
      * @return JsonResponse
@@ -129,11 +125,11 @@ class AuthController extends Controller
 
 
     /**
-     * @OA\Post(
+     * @OA\Get(
      *     path="/api/logout",
      *     summary="Cerrar sesión y revocar token de autenticación",
      *     tags={"CRUD Authentication"},
-     *     security={{"bearerAuth":{}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Response(
      *         response=200,
      *         description="Cierre de sesión exitoso",
@@ -158,9 +154,10 @@ class AuthController extends Controller
     {
         auth()->user()->tokens()->delete();
 
-        return response()
-            ->json(['message'=>'Cierre de sesión exitoso'],201);
+        return response()->json(['message' => 'Cierre de sesión exitoso'], 200);
     }
+
+
 
     /**
      * @OA\Put(
@@ -224,43 +221,50 @@ class AuthController extends Controller
     /**
      * @OA\Delete(
      *     path="/api/delete",
-     *     summary="Eliminar usuario y revocar tokens",
+     *     summary="Delete user",
+     *     description="Delete a user and revoke access tokens",
+     *     operationId="deleteUser",
      *     tags={"CRUD Authentication"},
-     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="email", type="string", example="sifaqes@gmail.com", description="Email of the user to be deleted"),
+     *                 @OA\Property(property="password", type="string", example="12345678", description="New password for the user (optional)"),
+     *             ),
+     *         ),
+     *     ),
      *     @OA\Response(
-     *         response=200,
-     *         description="Usuario eliminado",
+     *         response=201,
+     *         description="User deleted successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Usuario eliminado")
-     *         )
+     *         ),
      *     ),
      *     @OA\Response(
      *         response=401,
-     *         description="No autorizado",
+     *         description="Unauthorized",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="No autorizado")
-     *         )
+     *             @OA\Property(property="error", type="string", example="Unauthenticated")
+     *         ),
      *     ),
      *     @OA\Response(
-     *         response=404,
-     *         description="Usuario no encontrado",
+     *         response=500,
+     *         description="Internal Server Error",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Usuario no encontrado")
-     *         )
-     *     )
+     *             @OA\Property(property="error", type="string", example="Internal Server Error")
+     *         ),
+     *     ),
      * )
-     *
-     * Eliminar el usuario y revocar todos los tokens de autenticación.
-     *
-     * @return JsonResponse
      */
+
     public function delete(): JsonResponse
     {
         $user = auth()->user();
         $user->tokens()->delete();
         $user->delete();
-        return response()
-            ->json(['message'=>'Usuario eliminado'],201);
+        return response()->json(['message' => 'Usuario eliminado'], 201);
     }
 
 
