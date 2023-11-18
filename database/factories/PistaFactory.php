@@ -23,6 +23,7 @@ class PistaFactory extends Factory
         return [
             'deporte_id' => Deporte::factory(),
             'pista' => $this->faker->randomElement(['pista A', 'pista B', 'pista C','pista D']),
+            'disponibilidad' => true,
         ];
     }
 }

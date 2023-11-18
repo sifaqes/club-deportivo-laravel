@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('deporte_id')->constrained();
             $table->string('pista', 50);
+            $table->boolean('disponibilidad')->default(true);
             $table->timestamps();
 
         });
