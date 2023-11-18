@@ -15,22 +15,6 @@ class ReservasSeeder extends Seeder
      */
     public function run(): void
     {
-        //Reserva::class::factory(10)->create();
-
-        $socios = Socio::all();
-        $pistas = Pista::all();
-        $deportes = Deporte::all();
-
-        foreach ($socios as $socio) {
-            $hora_reserva = now()->setHour(9)->setMinute(0)->setSecond(0);
-            Reserva::create([
-                'socio_id' => $socio->id,
-                'pista_id' => $pistas->random()->id,
-                'nombre_r' => $socio->nombre,
-                'pista_r' => $pistas->random()->pista,
-                'deporte_r' => $deportes->random()->deporte,
-                'hora_reserva' => $hora_reserva,
-            ]);
-        }
+        Reserva::class::factory(10)->create();
     }
 }

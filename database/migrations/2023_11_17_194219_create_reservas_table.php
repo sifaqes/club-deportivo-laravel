@@ -15,15 +15,20 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('socio_id');
-            $table->unsignedBigInteger('pista_id');
-
-            $table->string('nombre_r')->references('id')->on('socios');
-            $table->string('pista_r')->references('id')->on('pistas');
-            $table->string('deporte_r')->references('id')->on('deportes');
-            $table->time('hora_reserva');
-
             $table->foreign('socio_id')->references('id')->on('socios');
+
+            $table->unsignedBigInteger('pista_id');
             $table->foreign('pista_id')->references('id')->on('pistas');
+
+            $table->string('socio')->references('id')->on('socios');
+            $table->string('pista')->references('id')->on('pistas');
+            $table->string('deporte')->references('id')->on('deportes');
+
+
+            $table->dateTime('fecha');
+            $table->time('hora');
+
+
 
             $table->timestamps();
 
