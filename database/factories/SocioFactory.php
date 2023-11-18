@@ -21,6 +21,7 @@ class SocioFactory extends Factory
     {
         return [
             'nombre' => $this->faker->firstName,
+            'apellidos' => $this->faker->lastName,
         ];
     }
 }

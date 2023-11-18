@@ -20,7 +20,17 @@ class DeporteFactory extends Factory
     public function definition(): array
     {
         return [
-            'deporte' => $this->faker->randomElement(['baloncesto', 'futbol', 'tenis', 'padel', 'balonmano', 'voleibol', 'hockey', 'rugby']),
+
+            'deporte' => $this->faker->randomElement([
+                'baloncesto',
+                'futbol',
+                'tenis',
+                'padel',
+                'balonmano',
+                'voleibol',
+                'hockey',
+                'rugby']),
+
         ];
     }
 }

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('pistas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('deporte_id');
+            $table->foreignId('deporte_id')->constrained();
             $table->string('pista', 50);
             $table->timestamps();
-            $table->foreign('deporte_id')->references('id')->on('deportes');
+
         });
     }
 

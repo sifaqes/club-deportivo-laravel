@@ -12,23 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservas', function (Blueprint $table) {
+
             $table->id();
 
-            $table->unsignedBigInteger('socio_id');
-            $table->foreign('socio_id')->references('id')->on('socios');
-
-            $table->unsignedBigInteger('pista_id');
-            $table->foreign('pista_id')->references('id')->on('pistas');
+            $table->foreignId('socio_id')->constrained();
+            $table->foreignId('pista_id')->constrained();
 
             $table->string('socio')->references('id')->on('socios');
             $table->string('pista')->references('id')->on('pistas');
             $table->string('deporte')->references('id')->on('deportes');
 
+            $table->date('fecha');
 
-            $table->dateTime('fecha');
-            $table->time('hora');
-
-
+            $table->time('hora_inicio');
+            $table->time('hora_fin');
 
             $table->timestamps();
 

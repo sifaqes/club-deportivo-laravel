@@ -9,33 +9,38 @@ use App\Models\Socio;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Reserva>
+ * @extends Factory<\App\Models\Reserva>
  */
 class ReservaFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
+     * @param $faker
      * @return array<string, mixed>
      */
 
     public function definition(): array
     {
-        $socios = Socio::factory()->create()->all();
-        $pistas = Pista::factory()->create()->all();
+
+        $socios = Socio::factory()->create()->all()->random();
+        $pistas = Pista::factory()->create()->all()->random();
 
         $hora_reserva = now()->setHour(9)->setMinute(0)->setSecond(0);
 
+        $horaInicio = $this->faker->dateTimeBetween('08:00', '22:00', 'Europe/Madrid')->format('H:00');;
+
+        $horaFin = date('H:00', strtotime($horaInicio . ' +1 hour'));
+
         return [
-
-            'socio_id' => $socios->random()->id,
-            'pista_id' => $pistas->random()->id,
-            'socio' => $socios->random()->nombre,
-            'pista' => $pistas->random()->pista,
-            'deporte' => $pistas->random()->deporte->deporte,
-            'fecha' => $this->faker->dateTimeBetween('now', '+1 years'),
-            'hora' => $hora_reserva,
-
+            'socio_id' => $socios->id,
+            'pista_id' => $pistas->id,
+            'socio' => $socios->nombre,
+            'pista' => $pistas->pista,
+            'deporte' => $pistas->deporte->deporte,
+            'fecha' => $hora_reserva,
+            'hora_inicio' => $horaInicio,
+            'hora_fin' => $horaFin,
         ];
     }
 }
