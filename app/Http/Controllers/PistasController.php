@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pistas;
+use App\Models\Deporte;
+use App\Models\Pista;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PistasController extends Controller
@@ -10,9 +12,26 @@ class PistasController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        $deportesConPistas = [];
+
+        $deportes = Deporte::all();
+
+        foreach ($deportes as $deporte) {
+
+            $pistasDisponibles = Pista::where('deporte_id', $deporte->id)
+                ->where('disponibilidad', true)
+                ->pluck('pista');
+
+
+            $deportesConPistas[] = [
+                'deporte' => $deporte->deporte,
+                'pistas_disponibles' => $pistasDisponibles,
+            ];
+        }
+
+        return response()->json(['deportes_con_pistas' => $deportesConPistas], 200);
     }
 
     /**

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deporte;
 use App\Models\Deportes;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DeportesController extends Controller
@@ -10,10 +12,10 @@ class DeportesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
-        return Deportes::all();
+        $listDeportes = Deporte::pluck('deporte');
+        return response()->json(['deportes' => $listDeportes]);
     }
 
     /**

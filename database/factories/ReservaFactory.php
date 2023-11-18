@@ -6,7 +6,9 @@ use App\Models\Deporte;
 use App\Models\Pista;
 use App\Models\Reserva;
 use App\Models\Socio;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @extends Factory<\App\Models\Reserva>
@@ -23,6 +25,7 @@ class ReservaFactory extends Factory
     public function definition(): array
     {
 
+        $users = User::all();
         $socios = Socio::factory()->create()->all()->random();
         $pistas = Pista::factory()->create()->all()->random();
 
@@ -35,6 +38,7 @@ class ReservaFactory extends Factory
         return [
             'socio_id' => $socios->id,
             'pista_id' => $pistas->id,
+            'user_id' => $users->random()->id,
             'socio' => $socios->nombre,
             'pista' => $pistas->pista,
             'deporte' => $pistas->deporte->deporte,

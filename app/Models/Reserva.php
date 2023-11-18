@@ -12,6 +12,25 @@ class Reserva extends Model
 {
     use HasFactory;
     // Relation con Socio
+    protected $fillable = [
+        'user_id',
+        'socio_id',
+        'pista_id',
+        'socio',
+        'pista',
+        'deporte',
+        'fecha',
+        'hora_inicio',
+        'hora_fin',
+    ];
+
+    // Relación con el modelo User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
     public function socio(): BelongsTo
     {
         return $this->belongsTo(Socio::class);

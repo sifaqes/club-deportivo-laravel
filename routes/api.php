@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeportesController;
+use App\Http\Controllers\PistasController;
+use App\Http\Controllers\ReservasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,8 +28,6 @@ Route::post('login',[AuthController::class,'login']);
 
 Route::middleware('auth:sanctum')->group( function (){
 
-    Route::get('deportes',[DeportesController::class,'index']);
-
     Route::put('update',[AuthController::class,'update']);
 
     Route::get('logout',[AuthController::class,'logout']);
@@ -35,5 +35,26 @@ Route::middleware('auth:sanctum')->group( function (){
     Route::delete('delete',[AuthController::class,'delete']);
 
 });
+
+
+Route::middleware('auth:sanctum')->group(function () {
+
+});
+
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    // ReservasController
+    Route::apiResource('reservas', ReservasController::class);
+
+
+    // DeporteController
+    Route::get('deportes',[DeportesController::class,'index']);
+
+    // PistasController
+    Route::apiResource('pistas', PistasController::class);
+
+});
+
 
 
