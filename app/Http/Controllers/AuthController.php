@@ -29,7 +29,6 @@ class AuthController extends Controller
      *         required=true,
      *         description="Datos para registrar un nuevo usuario",
      *         @OA\JsonContent(
-     *             @OA\Property(property="name", type="string", example="sifaqes"),
      *             @OA\Property(property="email", type="string", format="email", example="sifaqes@gmail.com"),
      *             @OA\Property(property="password", type="string", example="12345678"),
      *             @OA\Property(property="password_confirmation", type="string", example="12345678")
@@ -52,7 +51,6 @@ class AuthController extends Controller
     public function register(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(),[
-            'name'=>'required|string|max:100',
             'email'=>'required|string|email|max:255|unique:users',
             'password'=>'required|string|confirmed|min:8'
         ]);
@@ -62,7 +60,6 @@ class AuthController extends Controller
         }
 
         $user = User::create([
-            'name'=>$request->get('name'),
             'email'=>$request->get('email'),
             'password'=>Hash::make($request->get('password'))
         ]);
@@ -91,7 +88,6 @@ class AuthController extends Controller
      *         response=201,
      *         description="Inicio de sesión exitoso",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Hola NombreUsuario"),
      *             @OA\Property(property="access_token", type="string", example="token_de_autenticacion")
      *         )
      *     ),
@@ -118,7 +114,7 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'message' => 'Hola ' . $user->name,
+            'message' => 'Hola ' . $user->email,
             'access_token' => $token,
         ], 201);
     }
@@ -169,7 +165,6 @@ class AuthController extends Controller
      *         required=true,
      *         description="Datos para actualizar el usuario",
      *         @OA\JsonContent(
-     *             @OA\Property(property="name", type="string", example="NuevoNombre"),
      *             @OA\Property(property="email", type="string", example="nuevo@dominio.com"),
      *             @OA\Property(property="password", type="string", example="nuevacontrasena")
      *         )
@@ -205,7 +200,6 @@ class AuthController extends Controller
     public function update(Request $request): JsonResponse
     {
         $user = auth()->user();
-        $user->name = $request->get('name');
         $user->email = $request->get('email');
 
         if($request->get('password')){

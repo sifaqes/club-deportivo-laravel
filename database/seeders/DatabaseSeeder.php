@@ -20,7 +20,11 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
+            UsersSeeder::class,
+            SociosSeeder::class,
             DeportesSeeder::class,
+            PistasSeeder::class,
+            ReservasSeeder::class,
         ]);
     }
 }
