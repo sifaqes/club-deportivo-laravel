@@ -84,7 +84,7 @@ class ReservasController extends Controller
 
         // comprobar que no se superan las 3 reservas diarias
         $reservasDiarias = Reserva::where('socio_id', $userId)->whereDate('horaInicio', now()->toDateString())->count();
-        if ($reservasDiarias >= 3) {
+        if ($reservasDiarias >= env('MAX_RESERVAS_DIA', 3)) {
             return response()->json(['error' => 'No puedes realizar más de 3 reservas en un mismo día.'], 422);
         }
 
