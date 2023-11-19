@@ -52,11 +52,10 @@ class ReservasController extends Controller
             return response()->json(['error' => 'La hora de inicio debe estar entre las 08:00 y las 22:00'], 400);
         }
 
-        // Comprobamos que el socio existe
+
         $socioId = Auth::id();
 
 
-        // Verificar la cantidad máxima de reservas diarias permitidas
         $reservasDiarias = Reserva::where('socio_id', $socioId)
             ->whereDate('hora_inicio', now()->toDateString())->count();
 
@@ -68,7 +67,7 @@ class ReservasController extends Controller
 
             $email = User::findOrFail($socioId)->email;
 
-            $socio = Socio::all(['nombre','apellidos'])->random();
+            $socio = Socio::all()->random()->nombre;
             $pista = Pista::where('id', $request->pista_id)->first()->pista;
             $deporte = Pista::where('id', $request->pista_id)->first()->deporte->deporte;
 
@@ -79,26 +78,17 @@ class ReservasController extends Controller
             $reserva = [
 
                 'user_id'=>$socioId,
-
                 'socio_id' => $socioId,
-
                 'pista_id' => $request->pista_id,
-
                 'socio' => $socio,
-
                 'pista'  => $pista,
-
                 'deporte' => $deporte,
-
                 'fecha' => $fecha,
-
                 'hora_inicio' => $hora_inicio,
-
                 'hora_fin' => $hora_fin,
-
-
-                'hora_inicio'=>$request->hora_inicio
             ];
+
+            Reserva::factory()->create($reserva);
 
             return response()->json(['reserva' => $reserva ], 201);
         }catch (\Exception $e){
