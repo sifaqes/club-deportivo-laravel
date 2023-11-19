@@ -94,18 +94,22 @@ class DeportesController extends Controller
     {
         $request->validate([
             'deporte' => 'required|string|exists:deportes,deporte',
-            'nuevoDeporte' => 'required|string|unique:deportes,deporte',
+            'nuevoDeporte' => 'required|string',
         ]);
 
         $deporte = $request->input('deporte');
         $nuevoDeporte = $request->input('nuevoDeporte');
 
-        $deporteSql = Deporte::where('deporte', $deporte)->first();
-
         try {
+            $deporteSql = Deporte::where('deporte', $deporte)->first();
+
             $deporteSql->deporte = $nuevoDeporte;
+
+            $deporteSql->where('deporte', $deporte)->update(['deporte' => $nuevoDeporte]);
+
             $deporteSql->save();
-            return response()->json(['message' => 'Deporte '.$deporte.' modificado correctamente '], 201);
+
+            return response()->json(['message' => 'Deporte '.$deporteSql->deporte.' modificado correctamente '], 201);
         }catch (Exception $e){
             return response()->json(['error' => $e->getMessage()]);
         }
