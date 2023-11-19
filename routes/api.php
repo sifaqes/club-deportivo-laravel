@@ -29,13 +29,16 @@ Route::middleware('auth:sanctum')->group( function (){
     Route::apiResource('delete',AuthController::class);
     Route::get('logout',[AuthController::class,'logout']);
 
-
-    Route::apiResource('reservas', ReservasController::class);
+    // ReservasController
+    Route::get('reservas', [ReservasController::class,'index']);
     Route::post('reservas', [ReservasController::class,'store']);
     Route::delete('reservas', [ReservasController::class,'destroy']);
     Route::put('reservas', [ReservasController::class,'update']);
 
-    Route::apiResource('deportes',DeportesController::class);
+    Route::get('deportes', [DeportesController::class,'index']);
+    Route::post('deportes', [DeportesController::class,'store']);
+    Route::delete('deportes', [DeportesController::class,'destroy']);
+    Route::put('deportes', [DeportesController::class,'update']);
 
     Route::apiResource('pistas', PistasController::class);
 

@@ -12,6 +12,8 @@ class Deporte extends Model
 {
     use HasFactory;
     // Relación con Pistas
+    public mixed $deporte;
+
     public function pistas(): HasMany
     {
         return $this->hasMany(Pista::class);
