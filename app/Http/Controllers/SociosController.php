@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reserva;
 use App\Models\Socio;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -113,12 +114,23 @@ class SociosController extends Controller
     }
 
 
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $socios)
+    public function destroy(Request $request): JsonResponse
     {
+        $request->validate([
+            'id' => 'required|integer|exists:socios,id',
+        ]);
 
+        $id = $request->input('id');
+
+        Reserva::where('socio_id', $id)->delete();
+
+        Socio::destroy(1);
+
+        Socio::where('id', $id)->delete();
+
+        return response()->json(['message' => 'Socio eliminado correctamente'], 201);
     }
 }
