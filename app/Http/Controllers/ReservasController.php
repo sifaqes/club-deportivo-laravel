@@ -19,12 +19,20 @@ class ReservasController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+
+        $request->validate([
+            'fecha' => 'required|date_format:Y-m-d',
+        ]);
+
+        $fecha = $request->input('fecha');
+
+
+
         try {
 
-            $reservas = Reserva::all();
-
+            $reservas = Reserva::all()->where('fecha', $fecha);
             $result = $reservas->map(function ($reserva) {
                 return [
                     'id' => $reserva->id, 'reserva' => ['socio' => $reserva->socio,
