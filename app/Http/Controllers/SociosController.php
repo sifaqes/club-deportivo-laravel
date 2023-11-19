@@ -82,10 +82,37 @@ class SociosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request): JsonResponse
     {
-        //
+        $request->validate([
+            'socioId' => 'required|integer|exists:socios,id',
+            'nombre' => 'required',
+            'apellidos' => 'required',
+        ]);
+
+        $socioId = $request->socioId;
+        $nombre = $request->nombre;
+        $apellidos = $request->apellidos;
+
+        try {
+
+                $socio = Socio::find($socioId);
+
+                $socio->nombre = $nombre;
+                $socio->apellidos = $apellidos;
+
+                $socio->save();
+
+                return response()->json(['message' => 'Socio actualizado correctamente'], 201);
+        }   catch (Exception $e){
+
+            return response()->json(['error' => $e->getMessage()]);
+
+        }
+
     }
+
+
 
     /**
      * Remove the specified resource from storage.
