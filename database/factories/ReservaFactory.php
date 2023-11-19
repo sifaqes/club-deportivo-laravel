@@ -44,7 +44,7 @@ class ReservaFactory extends Factory
             'deporte' => $pistas->deporte->deporte,
             'fecha' => $hora_reserva,
             'hora_inicio' => $horaInicio,
-            'hora_fin' => $horaFin,
+            'horaFin' => $horaFin,
         ];
     }
 }

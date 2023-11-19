@@ -27,7 +27,7 @@ return new class extends Migration
             $table->date('fecha');
 
             $table->time('hora_inicio');
-            $table->time('hora_fin');
+            $table->time('horaFin');
 
             $table->timestamps();
 

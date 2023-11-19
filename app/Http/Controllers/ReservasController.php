@@ -19,7 +19,7 @@ class ReservasController extends Controller
      */
     public function index(): JsonResponse
     {
-        $reservas = Reserva::all('id','socio_id', 'pista_id','socio','pista','deporte','fecha', 'hora_inicio', 'hora_fin');
+        $reservas = Reserva::all('id','socio_id', 'pista_id','socio','pista','deporte','fecha', 'hora_inicio', 'horaFin');
         return response()->json(['reservas' => $reservas], 200);
     }
 
@@ -73,7 +73,7 @@ class ReservasController extends Controller
 
             $fecha = now()->toDateString();
             $hora_inicio = $request->hora_inicio;
-            $hora_fin = Carbon::createFromFormat('H:i', $request->hora_inicio)->addHour()->format('H:i');
+            $horaFin = Carbon::createFromFormat('H:i', $request->hora_inicio)->addHour()->format('H:i');
 
             $reserva = [
 
@@ -85,7 +85,7 @@ class ReservasController extends Controller
                 'deporte' => $deporte,
                 'fecha' => $fecha,
                 'hora_inicio' => $hora_inicio,
-                'hora_fin' => $hora_fin,
+                'horaFin' => $horaFin,
             ];
 
             Reserva::factory()->create($reserva);

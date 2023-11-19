@@ -21,7 +21,7 @@ class Reserva extends Model
         'deporte',
         'fecha',
         'hora_inicio',
-        'hora_fin',
+        'horaFin',
     ];
 
     // Relación con el modelo User
