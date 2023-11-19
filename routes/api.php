@@ -18,43 +18,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::post('register',[AuthController::class,'register']);
 
 Route::post('login',[AuthController::class,'login']);
+Route::post('register',[AuthController::class,'register']);
 
 Route::middleware('auth:sanctum')->group( function (){
 
-    Route::put('update',[AuthController::class,'update']);
-
+    // UsuariosController
+    Route::apiResource('profil',AuthController::class);
+    Route::apiResource('update',AuthController::class);
+    Route::apiResource('delete',AuthController::class);
     Route::get('logout',[AuthController::class,'logout']);
 
-    Route::delete('delete',[AuthController::class,'delete']);
-
-});
-
-
-Route::middleware('auth:sanctum')->group(function () {
-
-});
-
-
-
-Route::middleware('auth:sanctum')->group(function () {
     // ReservasController
     Route::apiResource('reservas', ReservasController::class);
-
-
     // DeporteController
-    Route::get('deportes',[DeportesController::class,'index']);
-
+    Route::apiResource('deportes',DeportesController::class);
     // PistasController
     Route::apiResource('pistas', PistasController::class);
 
 });
+
 
 
 
