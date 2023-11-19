@@ -4,7 +4,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeportesController;
 use App\Http\Controllers\PistasController;
 use App\Http\Controllers\ReservasController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,7 +29,11 @@ Route::middleware('auth:sanctum')->group( function (){
     Route::apiResource('delete',AuthController::class);
     Route::get('logout',[AuthController::class,'logout']);
 
+
     Route::apiResource('reservas', ReservasController::class);
+    Route::post('reservas', [ReservasController::class,'store']);
+    Route::delete('reservas', [ReservasController::class,'destroy']);
+    Route::put('reservas', [ReservasController::class,'update']);
 
     Route::apiResource('deportes',DeportesController::class);
 

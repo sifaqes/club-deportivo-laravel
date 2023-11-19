@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Pista;
 use App\Models\Reserva;
 use App\Models\Socio;
-use App\Models\User;
+use DateTime;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -19,8 +20,8 @@ class ReservasController extends Controller
      */
     public function index(): JsonResponse
     {
-        $reservas = Reserva::all('id','socio_id', 'pista_id','socio','pista','deporte','fecha', 'horaInicio', 'horaFin');
-        return response()->json(['reservas' => $reservas], 200);
+        $reservas = Reserva::all();
+        return response()->json(['reservas' => $reservas]);
     }
 
     /**
@@ -36,25 +37,24 @@ class ReservasController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        // Validaciones
+
         $request->validate([
             'pista_id' => ['required',
                 Rule::unique('reservas')->where(function ($query) use ($request) {
-                    return $query->where('horaInicio', $request->horaInicio);
+                    $horaInicio =  $request->Get('horaInicio');
+                    return $query->where('horaInicio', $horaInicio);
                 }),
             ],
             'horaInicio' => 'required|date_format:H:00',
         ]);
 
-        // Comprobamos la hora de reserva valida existe
-        $horaInicio = intval(substr($request->horaInicio, 0, 2));
+        $hora = $request->horaInicio;
+        $horaInicio = intval(substr($hora, 0, 2));
         if ($horaInicio < 8 || $horaInicio > 22) {
             return response()->json(['error' => 'La hora de inicio debe estar entre las 08:00 y las 22:00'], 400);
         }
 
-
         $socioId = Auth::id();
-
 
         $reservasDiarias = Reserva::where('socio_id', $socioId)
             ->whereDate('horaInicio', now()->toDateString())->count();
@@ -66,14 +66,16 @@ class ReservasController extends Controller
         try {
 
             //$email = User::findOrFail($socioId)->email;
-
             $socio = Socio::all()->random()->nombre;
-            $pista = Pista::where('id', $request->pista_id)->first()->pista;
-            $deporte = Pista::where('id', $request->pista_id)->first()->deporte->deporte;
+
+            $pistaId = $request->pista_id;
+
+            $pista = Pista::where('id', $pistaId)->first()->pista;
+            $deporte = Pista::where('id', $pistaId)->first()->deporte->deporte;
 
             $fecha = now()->toDateString();
             $horaInicio = $request->horaInicio;
-            $horaFin = Carbon::createFromFormat('H:i', $request->horaInicio)->addHour()->format('H:i');
+            $horaFin = Carbon::createFromFormat('H:i', $horaInicio)->addHour()->format('H:i');
 
             $reserva = [
 
@@ -91,8 +93,8 @@ class ReservasController extends Controller
             Reserva::factory()->create($reserva);
 
             return response()->json(['reserva' => $reserva ], 201);
-        }catch (\Exception $e){
-            return response()->json(['error' => $e->getMessage()], 200);
+        }catch (Exception $e){
+            return response()->json(['error' => $e->getMessage()]);
         }
     }
 
@@ -100,7 +102,7 @@ class ReservasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Reservas $reservas)
+    public function show(Request $reservas)
     {
         //
     }
@@ -113,19 +115,76 @@ class ReservasController extends Controller
         //
     }
 
+
     /**
      * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param  int  $reservaId
+     * @return JsonResponse
      */
-    public function update(Request $request, Reservas $reservas)
+    public function update(Request $request): JsonResponse
     {
-        //
+
+        $request->validate([
+            'reservaId' => 'required|integer|exists:reservas,id',
+            'nuevaHora' => 'required|date_format:H:00',
+        ]);
+
+        $reservaId = $request->reservaId;
+        $nuevaHora = $request->nuevaHora;
+
+        $user = Auth::user();
+
+        $reserva = Reserva::where('id', $reservaId)->where('socio_id', $user->getAuthIdentifier())->first();
+        if (!$reserva) {
+            return response()->json(['error' => 'No se encontró ninguna reserva para actualizar.'], 404);
+        }
+
+        $dateTime = DateTime::createFromFormat("H:i:s", $reserva->horaInicio);
+
+        // en caso que la reserva sea anterior a la hora actual no se puede modificar antes 2 horas
+        $horaReserva  = $dateTime->format("H:i");
+        $horaActual = date('H:00');
+
+        try {
+
+            $reserva->horaInicio = $nuevaHora;
+
+            $reserva->save();
+
+            return response()->json(['message' =>   'Reserva actualizada a '.$nuevaHora.' con éxito.'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
+     *
+     *
+     * @return JsonResponse
      */
-    public function destroy(Reservas $reservas)
+    public function destroy(): JsonResponse
     {
-        $user = auth()->user();
+
+        $user = Auth::user();
+
+        $reserva = Reserva::where('socio_id', $user->getAuthIdentifier())->latest()->first();
+
+        if (!$reserva) {
+            return response()->json(['error' => 'No se encontró ninguna reserva para eliminar.'], 404);
+        }
+
+        try {
+
+            $reserva->delete();
+
+            return response()->json(['message' => 'Reserva eliminada con éxito.'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
     }
 }

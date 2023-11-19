@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
+/**
+ * @method static where(string $string, mixed $pista_id)
+ */
 class Pista extends Model
 {
     use HasFactory;
