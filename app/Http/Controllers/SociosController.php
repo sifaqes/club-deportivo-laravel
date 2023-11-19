@@ -92,6 +92,6 @@ class SociosController extends Controller
      */
     public function destroy(Request $socios)
     {
-        
+
     }
 }

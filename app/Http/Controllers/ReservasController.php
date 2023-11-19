@@ -20,8 +20,28 @@ class ReservasController extends Controller
      */
     public function index(): JsonResponse
     {
-        $reservas = Reserva::all();
-        return response()->json(['reservas' => $reservas]);
+        try {
+
+            $reservas = Reserva::all();
+
+            $result = $reservas->map(function ($reserva) {
+                return [
+                    'id' => $reserva->id, 'reserva' => ['socio' => $reserva->socio,
+                        'pista' => $reserva->pista,
+                        'deporte' => $reserva->deporte,
+                        'fecha' => $reserva->fecha,
+                        'horaInicio' => $reserva->horaInicio,
+                        'horaFin' => $reserva->horaFin,],
+                ];
+            });
+
+            return response()->json(['reservas' =>  $result], 201);
+        }   catch (Exception $e){
+
+            return response()->json(['error' => $e->getMessage()]);
+
+        }
+
     }
 
     /**

@@ -14,14 +14,23 @@ class DeportesController extends Controller
      */
     public function index(): JsonResponse
     {
-        $deportes = Deporte::all();
 
-        $listaDeportes = $deportes->map(function ($deporte) {
-            return $deporte->deporte;
-        });
+        try {
 
-        return response()->json(['deportes' => $listaDeportes ]);
+            $deportes = Deporte::all('id','deporte')->sortBy('id');
+
+            return response()->json(['deportes' =>  $deportes], 201);
+
+        }catch (Exception $e){
+
+            return response()->json(['error' => $e->getMessage()]);
+
+        }
     }
+
+
+
+
 
     /**
      * Show the form for creating a new resource.

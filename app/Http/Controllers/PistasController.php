@@ -14,25 +14,19 @@ class PistasController extends Controller
      */
     public function index(): JsonResponse
     {
-        $deportesConPistas = [];
+        try {
 
-        $deportes = Deporte::all();
+            $pista = Pista::all('id','pista')->sortBy('id');
 
-        foreach ($deportes as $deporte) {
+            return response()->json(['pista' =>  $pista], 201);
 
-            $pistasDisponibles = Pista::where('deporte_id', $deporte->id)
-                ->where('disponibilidad', true)
-                ->pluck('pista');
+        }catch (Exception $e){
 
+            return response()->json(['error' => $e->getMessage()]);
 
-            $deportesConPistas[] = [
-                'deporte' => $deporte->deporte,
-                'pistas_disponibles' => $pistasDisponibles,
-            ];
         }
-
-        return response()->json(['deportes_con_pistas' => $deportesConPistas], 200);
     }
+
 
     /**
      * Show the form for creating a new resource.
