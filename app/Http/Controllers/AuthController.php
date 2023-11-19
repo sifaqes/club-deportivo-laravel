@@ -98,7 +98,7 @@ class AuthController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Socios $socios)
+    public function edit(Request $socios)
     {
         //
     }
@@ -124,7 +124,7 @@ class AuthController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Socios $socios)
+    public function destroy(): JsonResponse
     {
         $user = auth()->user();
         $user->tokens()->delete();

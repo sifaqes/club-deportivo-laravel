@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Socios;
+use App\Models\Socio;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SociosController extends Controller
@@ -10,9 +11,10 @@ class SociosController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        $request = Socio::all();
+        return response()->json(['socios' => $request], 200);
     }
 
     /**
@@ -20,7 +22,7 @@ class SociosController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**

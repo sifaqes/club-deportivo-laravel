@@ -30,19 +30,11 @@ Route::middleware('auth:sanctum')->group( function (){
     Route::apiResource('delete',AuthController::class);
     Route::get('logout',[AuthController::class,'logout']);
 
-
     Route::apiResource('reservas', ReservasController::class);
-
-
-
 
     Route::apiResource('deportes',DeportesController::class);
 
-
-
-
     Route::apiResource('pistas', PistasController::class);
-
 
     Route::apiResource('socios', PistasController::class);
 

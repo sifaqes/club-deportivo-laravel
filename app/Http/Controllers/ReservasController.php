@@ -108,7 +108,7 @@ class ReservasController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reservas $reservas)
+    public function edit(Request $reservas)
     {
         //
     }
@@ -126,6 +126,6 @@ class ReservasController extends Controller
      */
     public function destroy(Reservas $reservas)
     {
-        //
+        $user = auth()->user();
     }
 }
