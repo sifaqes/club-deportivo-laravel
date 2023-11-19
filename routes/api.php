@@ -31,33 +31,21 @@ Route::middleware('auth:sanctum')->group( function (){
     Route::get('logout',[AuthController::class,'logout']);
 
 
-    Route::apiResource('reservas/list', ReservasController::class);
-    Route::apiResource('reservas/create', ReservasController::class);
-    Route::apiResource('reservas/read', ReservasController::class);
-    Route::apiResource('reservas/upload', ReservasController::class);
-    Route::apiResource('reservas/delete', ReservasController::class);
+    Route::apiResource('reservas', ReservasController::class);
 
 
 
-    Route::apiResource('deportes/list',DeportesController::class);
-    Route::apiResource('deportes/create',DeportesController::class);
-    Route::apiResource('deportes/read',DeportesController::class);
-    Route::apiResource('deportes/upload',DeportesController::class);
-    Route::apiResource('deportes/delete',DeportesController::class);
+
+    Route::apiResource('deportes',DeportesController::class);
 
 
 
-    Route::apiResource('pistas/list', PistasController::class);
-    Route::apiResource('pistas/create', PistasController::class);
-    Route::apiResource('pistas/read', PistasController::class);
-    Route::apiResource('pistas/upload', PistasController::class);
-    Route::apiResource('pistas/delete', PistasController::class);
 
-    Route::apiResource('socios/list', PistasController::class);
-    Route::apiResource('socios/create', PistasController::class);
-    Route::apiResource('socios/read', PistasController::class);
-    Route::apiResource('socios/upload', PistasController::class);
-    Route::apiResource('socios/delete', PistasController::class);
+    Route::apiResource('pistas', PistasController::class);
+
+
+    Route::apiResource('socios', PistasController::class);
+
 });
 
 
