@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deporte;
 use App\Models\Pista;
 use App\Models\Reserva;
 use App\Models\Socio;
@@ -68,42 +69,50 @@ class ReservasController extends Controller
             'horaInicio' => 'required|date_format:H:00',
         ]);
 
+        // inputs
+        $pistaId = $request->input('pista_id');
         $hora = $request->horaInicio;
-        $horaInicio = intval(substr($hora, 0, 2));
 
+        //User
+        $userId = Auth::id();
+
+        // interval de tiempo
+        $horaInicio = intval(substr($hora, 0, 2));
         if ($horaInicio < 8 || $horaInicio > 22) {
             return response()->json(['error' => 'La hora de inicio debe estar entre las 08:00 y las 22:00'], 400);
         }
 
-        $socioId = Auth::id();
-
-        $reservasDiarias = Reserva::where('socio_id', $socioId)
-            ->whereDate('horaInicio', now()->toDateString())->count();
-
+        // comprobar que no se superan las 3 reservas diarias
+        $reservasDiarias = Reserva::where('socio_id', $userId)->whereDate('horaInicio', now()->toDateString())->count();
         if ($reservasDiarias >= 3) {
             return response()->json(['error' => 'No puedes realizar más de 3 reservas en un mismo día.'], 422);
         }
 
         try {
-
-            //$email = User::findOrFail($socioId)->email;
-            $socio = Socio::all()->random()->nombre;
-            $pistaId = $request->pistaId;
+            //socio
+            $socios = Socio::all()->find($pistaId);
+            $socioId =  $socios->id;
+            $socioNombre = $socios->nombre;
+            $socioApellidos = $socios->apellidos;
 
             $pista = Pista::where('id', $pistaId)->first()->pista;
-            $deporte = Pista::where('id', $pistaId)->first()->deporte->deporte;
+            $pistaId = Pista::where('id', $pistaId)->first()->deporte_id;
+
+            $deporte = Deporte::where('id', $pistaId)->first();
+            $deporteId = $deporte->id;
+
             $fecha = now()->toDateString();
 
             $horaInicio = $request->horaInicio;
             $horaFin = Carbon::createFromFormat('H:i', $horaInicio)->addHour()->format('H:i');
 
             $reserva = [
-                'user_id'=>$socioId,
+                'user_id'=>$userId,
                 'socio_id' => $socioId,
                 'pista_id' => $pistaId,
-                'socio' => $socio,
+                'socio' => $socioNombre . ' ' . $socioApellidos,
                 'pista'  => $pista,
-                'deporte' => $deporte,
+                'deporte' => $deporteId,
                 'fecha' => $fecha,
                 'horaInicio' => $horaInicio,
                 'horaFin' => $horaFin,
@@ -118,7 +127,6 @@ class ReservasController extends Controller
             return response()->json(['error' => $e->getMessage()]);
         }
     }
-
 
     /**
      * Display the specified resource.
