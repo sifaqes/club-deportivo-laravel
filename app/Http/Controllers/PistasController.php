@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Deporte;
 use App\Models\Pista;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -41,7 +42,29 @@ class PistasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'pista' => 'required|unique:pistas',
+        ]);
+
+        try {
+
+            $pista = $request->input('pista');
+
+            $pistaSql = [
+                'pista'=>$pista,
+            ];
+
+            Pista::factory()->create($pistaSql);
+
+            return response()->json(['message' => 'Pista '. $pistaSql['pista'].' creada correctamente'], 201);
+
+        }   catch (Exception $e){
+
+            return response()->json(['error' => $e->getMessage()]);
+
+        }
+
     }
 
     /**

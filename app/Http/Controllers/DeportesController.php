@@ -46,16 +46,29 @@ class DeportesController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
+
             'deporte' => 'required|unique:deportes',
+
         ]);
 
-        $deporte = new Deporte();
+        try {
 
-        $deporte->deporte = $request->input('deporte');
+            $deporte = $request->input('deporte');
 
-        $deporte->save();
+            $deporteSql = [
+                'deporte'=>$deporte,
+            ];
 
-        return response()->json(['message' => 'Deporte creado correctamente'], 201);
+            Deporte::factory()->create($deporteSql);
+
+           return response()->json(['message' => 'Deporte '.$deporteSql['deporte'].' creado correctamente'], 201);
+
+        }catch (Exception $e){
+
+            return response()->json(['error' => $e->getMessage()]);
+
+        }
+
     }
 
     /**
