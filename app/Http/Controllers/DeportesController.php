@@ -133,16 +133,16 @@ class DeportesController extends Controller
             return response()->json(['message' => 'Deporte no encontrado'], 404);
         }
 
-        $deporteId = $deportes->id;
+        $deporteId = $deportes->getAttributes()['id'];
 
         $pistas = Pista::where('deporte_id', $deporteId)->get();
 
         foreach ($pistas as $pista) {
-            $pista->delete();
+            $id [] = $pista->getAttributes()['id'];
         }
 
-        $deportes->delete();
+//        $deportes->delete();
 
-        return response()->json(['message' => ['deporte'=>$deporte.' eliminado correctamente','pistas'=>$pista]], 201);
+        return response()->json(['message' => 'method not allow.'], 201);
     }
 }

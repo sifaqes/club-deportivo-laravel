@@ -86,7 +86,7 @@ class PistasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Pistas $pistas)
+    public function update(Request $request)
     {
         //
     }
@@ -94,8 +94,30 @@ class PistasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pistas $pistas)
+    public function destroy(Request $request)
     {
-        //
+        $request->validate([
+            'id' => 'required|integer|exists:pistas,id',
+        ]);
+
+        $id = $request->input('id');
+
+        $pistas = Pista::all();
+        $deportes = Deporte::all();
+
+        $deporte = $deportes->where('id', $id)->first();
+        $pista = $pistas->where('deporte_id', $id)->first();
+
+        try {
+            if (!empty($pista) && !empty($deporte)){
+                $pista->delete();
+                $deporte->delete();
+                return response()->json(['message' =>  $pista['pista'].' de deporte '.$deporte['deporte'].' borrada correctamente'], 201);
+            }else{
+                return response()->json(['message' => 'No existe la pista o el deporte'], 201);
+            }
+        }catch (Exception $e){
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 }
