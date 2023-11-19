@@ -25,9 +25,9 @@ Route::post('register',[AuthController::class,'register']);
 Route::middleware('auth:sanctum')->group( function (){
 
     // UsuariosController
-    Route::apiResource('profil',AuthController::class);
-    Route::apiResource('update',AuthController::class);
-    Route::apiResource('delete',AuthController::class);
+    Route::get('profil',[AuthController::class, 'index']);
+    Route::put('update',[AuthController::class, 'update']);
+    Route::delete('delete',[AuthController::class, 'destroy']);
     Route::get('logout',[AuthController::class,'logout']);
 
     // ReservasController

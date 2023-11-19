@@ -1,10 +1,18 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Prueba deporte",
+        "title": "API club deportivo",
+        "description": "API Reservas club deportivo",
+        "contact": {
+            "email": "siphaxzer@gmail.com"
+        },
         "version": "1.0.0"
     },
     "servers": [
+        {
+            "url": "localhost:8000",
+            "description": "API Reservas"
+        },
         {
             "url": "localhost:8000"
         }
@@ -13,7 +21,7 @@
         "/api/register": {
             "post": {
                 "tags": [
-                    "CRUD Authentication"
+                    "CRUD Usuarios"
                 ],
                 "summary": "Registrar un nuevo usuario",
                 "operationId": "8a56853624e025573120a09a4c75d468",
@@ -26,20 +34,20 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "sifaqes"
+                                        "example": "NombreUsuario"
                                     },
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "sifaqes@gmail.com"
+                                        "example": "usuario@dominio.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "12345678"
+                                        "example": "contrasena"
                                     },
                                     "password_confirmation": {
                                         "type": "string",
-                                        "example": "12345678"
+                                        "example": "contrasena"
                                     }
                                 },
                                 "type": "object"
@@ -55,298 +63,11 @@
                                 "schema": {
                                     "properties": {
                                         "user": {
-                                            "$ref": "informacion de usuario"
+                                            "type": "object"
                                         },
                                         "token": {
                                             "type": "string",
                                             "example": "token_de_autenticacion"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/login": {
-            "post": {
-                "tags": [
-                    "CRUD Authentication"
-                ],
-                "summary": "Iniciar sesión y obtener token de autenticación",
-                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
-                "requestBody": {
-                    "description": "Credenciales de inicio de sesión",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "example": "sifaqes@gmail.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "12345678"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Inicio de sesión exitoso",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Hola NombreUsuario"
-                                        },
-                                        "access_token": {
-                                            "type": "string",
-                                            "example": "token_de_autenticacion"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Detalles de inicio de sesión no válidos",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Detalles de inicio de sesión no válidos"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/logout": {
-            "get": {
-                "tags": [
-                    "CRUD Authentication"
-                ],
-                "summary": "Cerrar sesión y revocar token de autenticación",
-                "operationId": "3f19b742e4ead13f81ba0d6c0d46ac1b",
-                "responses": {
-                    "200": {
-                        "description": "Cierre de sesión exitoso",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Cierre de sesión exitoso"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "No autorizado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "No autorizado"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/update": {
-            "put": {
-                "tags": [
-                    "CRUD Authentication"
-                ],
-                "summary": "Actualizar información del usuario",
-                "operationId": "0533045b97c06136dcd13671333c81d4",
-                "requestBody": {
-                    "description": "Datos para actualizar el usuario",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "NuevoNombre"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "example": "nuevo@dominio.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "nuevacontrasena"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Usuario actualizado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Usuario actualizado"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Error de validación",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Errores de validación"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "No autorizado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "No autorizado"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/delete": {
-            "delete": {
-                "tags": [
-                    "CRUD Authentication"
-                ],
-                "summary": "Delete user",
-                "description": "Delete a user and revoke access tokens",
-                "operationId": "deleteUser",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "email": {
-                                        "description": "Email of the user to be deleted",
-                                        "type": "string",
-                                        "example": "sifaqes@gmail.com"
-                                    },
-                                    "password": {
-                                        "description": "New password for the user (optional)",
-                                        "type": "string",
-                                        "example": "12345678"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "User deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Usuario eliminado"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Unauthenticated"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Internal Server Error"
                                         }
                                     },
                                     "type": "object"
