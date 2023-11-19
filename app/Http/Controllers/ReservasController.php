@@ -65,7 +65,7 @@ class ReservasController extends Controller
 
         try {
 
-            $email = User::findOrFail($socioId)->email;
+            //$email = User::findOrFail($socioId)->email;
 
             $socio = Socio::all()->random()->nombre;
             $pista = Pista::where('id', $request->pista_id)->first()->pista;
