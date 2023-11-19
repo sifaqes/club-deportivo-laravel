@@ -47,7 +47,7 @@ Route::middleware('auth:sanctum')->group( function (){
     Route::get('pistas', [PistasController::class,'index']);
     Route::put('pistas', [PistasController::class,'update']);
     Route::delete('pistas', [PistasController::class,'destroy']);
-    
+
     // SociosController
     Route::post('socios', [SociosController::class,'store']);
     Route::get('socios', [SociosController::class,'index']);
