@@ -31,25 +31,28 @@ Route::middleware('auth:sanctum')->group( function (){
     Route::get('logout',[AuthController::class,'logout']);
 
     // ReservasController
-    Route::get('reservas', [ReservasController::class,'index']);
     Route::post('reservas', [ReservasController::class,'store']);
+    Route::get('reservas', [ReservasController::class,'index']);
     Route::delete('reservas', [ReservasController::class,'destroy']);
     Route::put('reservas', [ReservasController::class,'update']);
 
-    Route::get('deportes', [DeportesController::class,'index']);
+    // DeportesController
     Route::post('deportes', [DeportesController::class,'store']);
-    Route::delete('deportes', [DeportesController::class,'destroy']);
+    Route::get('deportes', [DeportesController::class,'index']);
     Route::put('deportes', [DeportesController::class,'update']);
+    Route::delete('deportes', [DeportesController::class,'destroy']);
 
-    Route::get('pistas', [PistasController::class,'index']);
+    // PistasController
     Route::post('pistas', [PistasController::class,'store']);
-    Route::delete('pistas', [PistasController::class,'destroy']);
+    Route::get('pistas', [PistasController::class,'index']);
     Route::put('pistas', [PistasController::class,'update']);
-
-    Route::get('socios', [SociosController::class,'index']);
+    Route::delete('pistas', [PistasController::class,'destroy']);
+    
+    // SociosController
     Route::post('socios', [SociosController::class,'store']);
-    Route::delete('socios', [SociosController::class,'destroy']);
+    Route::get('socios', [SociosController::class,'index']);
     Route::put('socios', [SociosController::class,'update']);
+    Route::delete('socios', [SociosController::class,'destroy']);
 
 });
 
