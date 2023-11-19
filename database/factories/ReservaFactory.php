@@ -28,6 +28,7 @@ class ReservaFactory extends Factory
         $users = User::all();
         $socios = Socio::factory()->create()->all()->random();
         $pistas = Pista::factory()->create()->all()->random();
+        $deporte = $pistas->all()->random()->deporte;
 
         $hora_reserva = now()->setHour(9)->setMinute(0)->setSecond(0);
 
@@ -41,7 +42,7 @@ class ReservaFactory extends Factory
             'user_id' => $users->random()->id,
             'socio' => $socios->nombre,
             'pista' => $pistas->pista,
-            'deporte' => $pistas->deporte->deporte,
+            'deporte' => $deporte,
             'fecha' => $hora_reserva,
             'horaInicio' => $horaInicio,
             'horaFin' => $horaFin,

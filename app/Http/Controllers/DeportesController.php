@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Deporte;
+use App\Models\Pista;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -124,16 +125,24 @@ class DeportesController extends Controller
             'deporte' => 'required|string|exists:deportes,deporte',
         ]);
 
-        $deporte= $request->input('deporte');
+        $deporte = $request->input('deporte');
 
-        $deporteSql = Deporte::where('deporte', $deporte)->first();
+        $deportes = Deporte::where('deporte', $deporte)->first();
 
-        try {
-            $deporteSql->delete();
-            return response()->json(['message' => 'Deporte '.$deporte.' borrado correctamente '], 201);
-
-        }catch (Exception $e){
-            return response()->json(['error' => $e->getMessage()]);
+        if (!$deportes) {
+            return response()->json(['message' => 'Deporte no encontrado'], 404);
         }
-       }
+
+        $deporteId = $deportes->id;
+
+        $pistas = Pista::where('deporte_id', $deporteId)->get();
+
+        foreach ($pistas as $pista) {
+            $pista->delete();
+        }
+
+        $deportes->delete();
+
+        return response()->json(['message' => ['deporte'=>$deporte.' eliminado correctamente','pistas'=>$pista]], 201);
+    }
 }
