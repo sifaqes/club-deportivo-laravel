@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeportesController;
 use App\Http\Controllers\PistasController;
 use App\Http\Controllers\ReservasController;
+use App\Http\Controllers\SociosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,9 +41,15 @@ Route::middleware('auth:sanctum')->group( function (){
     Route::delete('deportes', [DeportesController::class,'destroy']);
     Route::put('deportes', [DeportesController::class,'update']);
 
-    Route::apiResource('pistas', PistasController::class);
+    Route::get('pistas', [PistasController::class,'index']);
+    Route::post('pistas', [PistasController::class,'store']);
+    Route::delete('pistas', [PistasController::class,'destroy']);
+    Route::put('pistas', [PistasController::class,'update']);
 
-    Route::apiResource('socios', PistasController::class);
+    Route::get('socios', [SociosController::class,'index']);
+    Route::post('socios', [SociosController::class,'store']);
+    Route::delete('socios', [SociosController::class,'destroy']);
+    Route::put('socios', [SociosController::class,'update']);
 
 });
 
