@@ -19,7 +19,7 @@ class ReservasController extends Controller
      */
     public function index(): JsonResponse
     {
-        $reservas = Reserva::all('id','socio_id', 'pista_id','socio','pista','deporte','fecha', 'hora_inicio', 'horaFin');
+        $reservas = Reserva::all('id','socio_id', 'pista_id','socio','pista','deporte','fecha', 'horaInicio', 'horaFin');
         return response()->json(['reservas' => $reservas], 200);
     }
 
@@ -40,14 +40,14 @@ class ReservasController extends Controller
         $request->validate([
             'pista_id' => ['required',
                 Rule::unique('reservas')->where(function ($query) use ($request) {
-                    return $query->where('hora_inicio', $request->hora_inicio);
+                    return $query->where('horaInicio', $request->horaInicio);
                 }),
             ],
-            'hora_inicio' => 'required|date_format:H:00',
+            'horaInicio' => 'required|date_format:H:00',
         ]);
 
         // Comprobamos la hora de reserva valida existe
-        $horaInicio = intval(substr($request->hora_inicio, 0, 2));
+        $horaInicio = intval(substr($request->horaInicio, 0, 2));
         if ($horaInicio < 8 || $horaInicio > 22) {
             return response()->json(['error' => 'La hora de inicio debe estar entre las 08:00 y las 22:00'], 400);
         }
@@ -57,7 +57,7 @@ class ReservasController extends Controller
 
 
         $reservasDiarias = Reserva::where('socio_id', $socioId)
-            ->whereDate('hora_inicio', now()->toDateString())->count();
+            ->whereDate('horaInicio', now()->toDateString())->count();
 
         if ($reservasDiarias >= 3) {
             return response()->json(['error' => 'No puedes realizar más de 3 reservas en un mismo día.'], 422);
@@ -72,8 +72,8 @@ class ReservasController extends Controller
             $deporte = Pista::where('id', $request->pista_id)->first()->deporte->deporte;
 
             $fecha = now()->toDateString();
-            $hora_inicio = $request->hora_inicio;
-            $horaFin = Carbon::createFromFormat('H:i', $request->hora_inicio)->addHour()->format('H:i');
+            $horaInicio = $request->horaInicio;
+            $horaFin = Carbon::createFromFormat('H:i', $request->horaInicio)->addHour()->format('H:i');
 
             $reserva = [
 
@@ -84,7 +84,7 @@ class ReservasController extends Controller
                 'pista'  => $pista,
                 'deporte' => $deporte,
                 'fecha' => $fecha,
-                'hora_inicio' => $hora_inicio,
+                'horaInicio' => $horaInicio,
                 'horaFin' => $horaFin,
             ];
 

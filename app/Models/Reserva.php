@@ -20,7 +20,7 @@ class Reserva extends Model
         'pista',
         'deporte',
         'fecha',
-        'hora_inicio',
+        'horaInicio',
         'horaFin',
     ];
 

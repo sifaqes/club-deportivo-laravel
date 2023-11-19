@@ -43,7 +43,7 @@ class ReservaFactory extends Factory
             'pista' => $pistas->pista,
             'deporte' => $pistas->deporte->deporte,
             'fecha' => $hora_reserva,
-            'hora_inicio' => $horaInicio,
+            'horaInicio' => $horaInicio,
             'horaFin' => $horaFin,
         ];
     }
