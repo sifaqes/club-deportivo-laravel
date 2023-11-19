@@ -87,21 +87,19 @@ class ReservasController extends Controller
 
             //$email = User::findOrFail($socioId)->email;
             $socio = Socio::all()->random()->nombre;
-
-            $pistaId = $request->pista_id;
+            $pistaId = $request->pistaId;
 
             $pista = Pista::where('id', $pistaId)->first()->pista;
             $deporte = Pista::where('id', $pistaId)->first()->deporte->deporte;
-
             $fecha = now()->toDateString();
+
             $horaInicio = $request->horaInicio;
             $horaFin = Carbon::createFromFormat('H:i', $horaInicio)->addHour()->format('H:i');
 
             $reserva = [
-
                 'user_id'=>$socioId,
                 'socio_id' => $socioId,
-                'pista_id' => $request->pista_id,
+                'pista_id' => $pistaId,
                 'socio' => $socio,
                 'pista'  => $pista,
                 'deporte' => $deporte,
@@ -113,7 +111,9 @@ class ReservasController extends Controller
             Reserva::factory()->create($reserva);
 
             return response()->json(['reserva' => $reserva ], 201);
+
         }catch (Exception $e){
+
             return response()->json(['error' => $e->getMessage()]);
         }
     }
