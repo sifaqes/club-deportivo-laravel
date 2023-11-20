@@ -7,6 +7,7 @@ use App\Models\Socio;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\isFalse;
 
 class SociosController extends Controller
 {
@@ -36,22 +37,27 @@ class SociosController extends Controller
 
     }
 
+
     /**
-     * Store a newly created resource in storage.
+     * @param Request $request
+     * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
+
+        $request->validate([
+            'nombre' => 'required|string|max:50',
+            'apellidos' => 'required|string|max:50',
+        ]);
         try {
 
-            $request->validate([
-                'nombre' => 'required|unique:socios',
-                'apellidos' => 'required|unique:socios',
-            ]);
+            $nombre = $request->input('nombre');
+            $apellidos = $request->input('apellidos');
 
             $socio = new Socio();
 
-            $this->$socio->nombre = $request->input('nombre');
-            $this->$socio->apellidos = $request->input('apellidos');
+            $socio->nombre =  $nombre;
+            $socio->apellidos = $apellidos;
 
             $socio->save();
 
@@ -91,9 +97,9 @@ class SociosController extends Controller
             'apellidos' => 'required',
         ]);
 
-        $socioId = $this->$request->socioId;
-        $nombre = $this->$request->nombre;
-        $apellidos = $this->$request->apellidos;
+        $socioId = $request->socioId;
+        $nombre = $request->nombre;
+        $apellidos = $request->apellidos;
 
         try {
 
@@ -124,9 +130,11 @@ class SociosController extends Controller
 
         $id = $request->input('id');
 
-        Reserva::where('socio_id', $id)->delete();
-
-        Socio::destroy(1);
+        if (Reserva::where('socio_id', $id)->exists()) {
+            Reserva::where('socio_id', $id)->delete();
+        }
+        
+        Socio::destroy($id);
 
         Socio::where('id', $id)->delete();
 
