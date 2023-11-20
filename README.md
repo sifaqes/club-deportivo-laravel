@@ -39,6 +39,14 @@ luego ejecute swagger para ver la documentación de la api
 
     php artisan l5-swagger:generate
 
+El enlace de la documentación es:
+
+    http://localhost:8000/api/documentation
+
+El archivo de configuración se encuentra en:
+
+    /storage/api-docs/api-docs.json
+
 
 ## Ejecutar el proyecto
 

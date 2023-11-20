@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,27 +12,26 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
-
 /**
+ *  Class AuthController
  * @OA\Info(
  *      version="1.0.0",
- *      title="API club deportivo",
- *      description="API Reservas club deportivo"
+ *      title="Club deportivo API",
+ *      description="API Reservas club deportivo, es  una pureba tecnica para la empresa NETSNITS ",
  *)
- *
- *
  * @OA\Server(
  *     url=L5_SWAGGER_CONST_HOST,
  *     description="API Reservas"
  * )
  * **/
+
 class AuthController extends Controller
 {
     /**
      * @OA\Post(
      *     path="/api/register",
      *     summary="Registrar un nuevo usuario",
-     *     tags={"CRUD Usuarios"},
+     *     tags={"Usuarios"},
      *     @OA\RequestBody(
      *         required=true,
      *         description="Datos para registrar un nuevo usuario",
@@ -80,6 +80,42 @@ class AuthController extends Controller
 
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/login",
+     *     operationId="login",
+     *     tags={"Usuarios"},
+     *     summary="Iniciar sesión",
+     *     description="Inicia sesión y devuelve un token de acceso.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="email", type="string", format="email", example="usuario@example.com"),
+     *             @OA\Property(property="password", type="string", example="contraseña_secreta")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Inicio de sesión exitoso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Hola usuario@example.com"),
+     *             @OA\Property(property="access_token", type="string", example="token_de_acceso_generado")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Credenciales no válidas",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Detalles de inicio de sesión no válidos")
+     *         )
+     *     ),
+     * )
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+
     public function login(Request $request): JsonResponse
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
@@ -96,6 +132,41 @@ class AuthController extends Controller
         ], 201);
     }
 
+    /**
+     * Cierra la sesión del usuario revocando todos los tokens de acceso.
+     *
+     * @return JsonResponse Devuelve una respuesta JSON indicando el éxito del cierre de sesión.
+     *
+     * @return JsonResponse
+     * @throws AuthorizationException Si el usuario no está autenticado.
+     *
+     * @OA\Post(
+     *     path="/api/logout",
+     *     operationId="logout",
+     *     tags={"Usuarios"},
+     *     summary="Cerrar sesión",
+     *     description="Cierra la sesión del usuario revocando todos los tokens de acceso.",
+     *     security={
+     *         {"bearerAuth": {}}
+     *     },
+     *     @OA\Response(
+     *         response=201,
+     *         description="Cierre de sesión exitoso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Cierre de sesión exitoso")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="No autorizado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="No se pudo cerrar sesión. Usuario no autenticado.")
+     *         )
+     *     )
+     * )
+     *
+     * @throws AuthorizationException
+     */
     public function logout(): JsonResponse
     {
         Auth::user()->tokens()->delete();
@@ -103,8 +174,37 @@ class AuthController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Muestra una lista de recursos.
+     *
+     * @param Request $request
+     * @return JsonResponse Devuelve una respuesta JSON con la información del usuario autenticado.
+     *
+     * @OA\Get(
+     *     path="/api/resource",
+     *     operationId="index",
+     *     tags={"Usuarios"},
+     *     summary="Listar recursos",
+     *     description="Muestra una lista de recursos.",
+     *     security={
+     *         {"bearerAuth": {}}
+     *     },
+     *     @OA\Response(
+     *         response=200,
+     *         description="Operación exitosa",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="user", type="object", description="Información del usuario autenticado"),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="No autorizado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="No autorizado para acceder a este recurso.")
+     *         )
+     *     )
+     * )
      */
+
     public function index(Request $request): JsonResponse
     {
         $user = $request->User();
@@ -144,7 +244,50 @@ class AuthController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza el recurso especificado en el almacenamiento.
+     *
+     * @param Request $request
+     * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la actualización.
+     *
+     * @OA\Patch(
+     *     path="/api/resource/update",
+     *     operationId="update",
+     *     tags={"Usuarios"},
+     *     summary="Actualizar recurso",
+     *     description="Actualiza el recurso especificado en el almacenamiento.",
+     *     security={
+     *         {"bearerAuth": {}}
+     *     },
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="email", type="string", format="email", example="nuevoemail@example.com"),
+     *             @OA\Property(property="password", type="string", example="contraseña_actual"),
+     *             @OA\Property(property="newPassword", type="string", example="nueva_contraseña")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Contraseña actualizada exitosamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Contraseña actualizada exitosamente")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="No autorizado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Contraseña actual incorrecta")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="El formato de correo electrónico no es válido.")
+     *         )
+     *     )
+     * )
      */
     public function update(Request $request): JsonResponse
     {
@@ -173,7 +316,34 @@ class AuthController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina el recurso especificado del almacenamiento.
+     *
+     * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la eliminación.
+     *
+     * @OA\Delete(
+     *     path="/api/resource/destroy",
+     *     operationId="destroy",
+     *     tags={"Usuarios"},
+     *     summary="Eliminar recurso",
+     *     description="Elimina el recurso especificado del almacenamiento.",
+     *     security={
+     *         {"bearerAuth": {}}
+     *     },
+     *     @OA\Response(
+     *         response=201,
+     *         description="Usuario eliminado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Usuario eliminado")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="No autorizado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="No se pudo eliminar el usuario. Usuario no autenticado.")
+     *         )
+     *     )
+     * )
      */
     public function destroy(): JsonResponse
     {
