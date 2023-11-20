@@ -42,9 +42,9 @@ class AuthController extends Controller
      *         required=true,
      *         description="Datos para registrar un nuevo usuario",
      *         @OA\JsonContent(
-     *             @OA\Property(property="email", type="string", format="email", example="usuario@dominio.com"),
-     *             @OA\Property(property="password", type="string", example="contrasena"),
-     *             @OA\Property(property="password_confirmation", type="string", example="contrasena")
+     *             @OA\Property(property="email", type="string", format="email", example="siphax@zerrouki.com"),
+     *             @OA\Property(property="password", type="string", example="12345678"),
+     *             @OA\Property(property="password_confirmation", type="string", example="12345678")
      *         )
      *     ),
      *     @OA\Response(
@@ -95,8 +95,8 @@ class AuthController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="email", type="string", format="email", example="usuario@example.com"),
-     *             @OA\Property(property="password", type="string", example="contraseña_secreta")
+     *             @OA\Property(property="email", type="string", format="email", example="siphax@zerrouki.com"),
+     *             @OA\Property(property="password", type="string", example="12345678")
      *         )
      *     ),
      *     @OA\Response(
@@ -261,8 +261,8 @@ class AuthController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="email", type="string", format="email", example="nuevoemail@example.com"),
-     *             @OA\Property(property="password", type="string", example="contraseña_actual"),
+     *             @OA\Property(property="email", type="string", format="email", example="siphax@zerrouki.com"),
+     *             @OA\Property(property="password", type="string", example="12345678"),
      *             @OA\Property(property="newPassword", type="string", example="nueva_contraseña")
      *         )
      *     ),

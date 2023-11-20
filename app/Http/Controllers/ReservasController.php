@@ -29,13 +29,21 @@ class ReservasController extends Controller
      * @return JsonResponse Devuelve una respuesta JSON con la lista de reservas.
      *
      * @OA\Post(
-     *     path="/api/buscador",
+     *     path="/api/reservas/search",
      *     tags={"Reservas"},
      *     summary="buscar reservas",
      *     description="Muestra una busqueda de reservas basada en la fecha especificada ex 2023-11-20",
      *          security={
      *          {"bearerAuth": {}}
      *      },
+     *     @OA\RequestBody(
+     *     required=true,
+     *          @OA\JsonContent
+     *          (
+     *              required={"fecha"},
+     *              @OA\Property(property="fecha", type="date", example="2023-11-20")
+     *          )
+     *      ),
      *     @OA\Parameter(
      *         name="fecha",
      *         in="query",
@@ -137,7 +145,7 @@ class ReservasController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             @OA\Property(property="pista_id", type="integer", example="1"),
-     *             @OA\Property(property="horaInicio", type="string", example="08:00")
+     *             @OA\Property(property="horaInicio", type="hour", example="08:00")
      *         )
      *     ),
      *     @OA\Response(
@@ -202,6 +210,7 @@ class ReservasController extends Controller
         if ($horaInicio < 8 || $horaInicio > 22) {
             return response()->json(['error' => 'La hora de inicio debe estar entre las 08:00 y las 22:00'], 400);
         }
+
 
         // comprobar que no se superan las 3 reservas diarias
         $reservasDiarias = Reserva::where('socio_id', $userId)->whereDate('horaInicio', now()->toDateString())->count();
@@ -271,7 +280,7 @@ class ReservasController extends Controller
      * @param Request $request
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la actualización.
      *
-     * @OA\Patch(
+     * @OA\Put(
      *     path="/api/reservas",
      *     tags={"Reservas"},
      *     summary="Actualizar reserva",
@@ -283,7 +292,7 @@ class ReservasController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             @OA\Property(property="reservaId", type="integer", example="1"),
-     *             @OA\Property(property="nuevaHora", type="string", example="10:00")
+     *             @OA\Property(property="nuevaHora", type="hour", example="10:00")
      *         )
      *     ),
      *     @OA\Response(

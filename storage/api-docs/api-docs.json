@@ -48,15 +48,15 @@
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "usuario@dominio.com"
+                                        "example": "siphax@zerrouki.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "contrasena"
+                                        "example": "12345678"
                                     },
                                     "password_confirmation": {
                                         "type": "string",
-                                        "example": "contrasena"
+                                        "example": "12345678"
                                     }
                                 },
                                 "type": "object"
@@ -104,11 +104,11 @@
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "usuario@example.com"
+                                        "example": "siphax@zerrouki.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "contraseña_secreta"
+                                        "example": "12345678"
                                     }
                                 },
                                 "type": "object"
@@ -271,11 +271,11 @@
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "nuevoemail@example.com"
+                                        "example": "siphax@zerrouki.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "contraseña_actual"
+                                        "example": "12345678"
                                     },
                                     "newPassword": {
                                         "type": "string",
@@ -1057,14 +1057,14 @@
                 ]
             }
         },
-        "/api/buscador": {
+        "/api/reservas/search": {
             "post": {
                 "tags": [
                     "Reservas"
                 ],
                 "summary": "buscar reservas",
                 "description": "Muestra una busqueda de reservas basada en la fecha especificada ex 2023-11-20",
-                "operationId": "60da9e9dc952910e1947810100da91da",
+                "operationId": "1a6928e2c28c7fe6624c14d7c5074611",
                 "parameters": [
                     {
                         "name": "fecha",
@@ -1077,6 +1077,26 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "fecha"
+                                ],
+                                "properties": {
+                                    "fecha": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-11-20"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "Operación exitosa",
@@ -1171,6 +1191,105 @@
             }
         },
         "/api/reservas": {
+            "put": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Actualizar reserva",
+                "description": "Actualiza el recurso de reserva especificado en el almacenamiento.",
+                "operationId": "d51e7260d8c6615c711c1e7f25c4ee5c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "reservaId": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "nuevaHora": {
+                                        "type": "hour",
+                                        "example": "10:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Reserva actualizada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Reserva actualizada a 10:00 con éxito."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No se encontró ninguna reserva para actualizar",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "No se encontró ninguna reserva para actualizar."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "El campo nuevaHora debe tener el formato 'H:00'."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Mensaje de error interno"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
             "post": {
                 "tags": [
                     "Reservas"
@@ -1189,7 +1308,7 @@
                                         "example": "1"
                                     },
                                     "horaInicio": {
-                                        "type": "string",
+                                        "type": "hour",
                                         "example": "08:00"
                                     }
                                 },
@@ -1337,105 +1456,6 @@
                                         "error": {
                                             "type": "string",
                                             "example": "No se encontró ninguna reserva para eliminar."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error interno del servidor",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Mensaje de error interno"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "patch": {
-                "tags": [
-                    "Reservas"
-                ],
-                "summary": "Actualizar reserva",
-                "description": "Actualiza el recurso de reserva especificado en el almacenamiento.",
-                "operationId": "0e8fbf0cc19091fe31ebd1fcfa9c218e",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "reservaId": {
-                                        "type": "integer",
-                                        "example": "1"
-                                    },
-                                    "nuevaHora": {
-                                        "type": "string",
-                                        "example": "10:00"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Reserva actualizada correctamente",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Reserva actualizada a 10:00 con éxito."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "No se encontró ninguna reserva para actualizar",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "No se encontró ninguna reserva para actualizar."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Error de validación",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "El campo nuevaHora debe tener el formato 'H:00'."
                                         }
                                     },
                                     "type": "object"
