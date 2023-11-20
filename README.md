@@ -31,6 +31,14 @@ no olvide arrancar el motor Mysql.
 
     php artisan migrate --seed
 
+luego ejecute swagger para ver la documentación de la api
+
+    composer require darkaonline/l5-swagger
+
+    php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"
+
+    php artisan l5-swagger:generate
+
 
 ## Ejecutar el proyecto
 
