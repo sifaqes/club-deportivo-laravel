@@ -17,11 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-//        Socio::factory(5)->create();
-//        Pista::factory(5)->create();
-//        Deporte::factory(5)->create();
-//        Reserva::class::factory(10)->create();
-//        User::factory(5)->create();
+
 
         $this->call([
             UsersSeeder::class,

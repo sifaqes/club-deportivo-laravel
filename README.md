@@ -31,6 +31,22 @@ no olvide arrancar el motor Mysql.
 
     php artisan migrate --seed
 
+luego ejecute swagger para ver la documentación de la api
+
+    composer require darkaonline/l5-swagger
+
+    php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"
+
+    php artisan l5-swagger:generate
+
+El enlace de la documentación es:
+
+    http://localhost:8000/api/documentation
+
+El archivo de configuración se encuentra en:
+
+    /storage/api-docs/api-docs.json
+
 
 ## Ejecutar el proyecto
 
@@ -38,6 +54,14 @@ no olvide arrancar el motor Mysql.
 
 ## Diagrame
 <a href="https://github.com/sifaqes/prueba/blob/master/diagram.png"><img src="https://github.com/sifaqes/prueba/blob/master/diagram.png" alt="Diagrame"></a>
+
+## Endpoints
+
+### Postman
+
+<a href="https://github.com/sifaqes/prueba/blob/develop/doc/postman%20api.png"><img src="https://github.com/sifaqes/prueba/blob/develop/doc/postman%20api.png" alt="postaman"></a>
+
+
 
 
 ## About Laravel
