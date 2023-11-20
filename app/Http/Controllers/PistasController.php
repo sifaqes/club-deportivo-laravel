@@ -24,10 +24,12 @@ class PistasController extends Controller
      *
      * @OA\Get(
      *     path="/api/pistas",
-     *     operationId="indexPistas",
      *     tags={"Pistas"},
      *     summary="Listar pistas",
      *     description="Muestra una lista de pistas.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\Response(
      *         response=201,
      *         description="Operación exitosa",
@@ -80,10 +82,12 @@ class PistasController extends Controller
      *
      * @OA\Post(
      *     path="/api/pistas",
-     *     operationId="storePistas",
      *     tags={"Pistas"},
      *     summary="Crear pista",
      *     description="Almacena un nuevo recurso de pista en el almacenamiento.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -164,12 +168,14 @@ class PistasController extends Controller
      * @param Request $request
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la actualización.
      *
-     * @OA\Patch(
-     *     path="/api/pistas/update",
-     *     operationId="updatePistas",
+     * @OA\Put(
+     *     path="/api/pistas",
      *     tags={"Pistas"},
      *     summary="Actualizar pista",
      *     description="Actualiza el recurso de pista especificado en el almacenamiento.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -240,11 +246,13 @@ class PistasController extends Controller
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la eliminación.
      *
      * @OA\Delete(
-     *     path="/api/pistas/destroy",
-     *     operationId="destroyPistas",
+     *     path="/api/pistas",
      *     tags={"Pistas"},
      *     summary="Eliminar pista",
      *     description="Elimina el recurso de pista y su deporte asociado en el almacenamiento.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(

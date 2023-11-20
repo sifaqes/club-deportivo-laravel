@@ -23,17 +23,19 @@ class ReservasController extends Controller
 {
 
     /**
-     * Muestra una lista de recursos basada en la fecha especificada.
+     * Buscar una lista de recursos basada en la fecha especificada.
      *
      * @param Request $request
      * @return JsonResponse Devuelve una respuesta JSON con la lista de reservas.
      *
-     * @OA\Get(
-     *     path="/api/reservas",
-     *     operationId="indexReservas",
+     * @OA\Post(
+     *     path="/api/buscador",
      *     tags={"Reservas"},
-     *     summary="Listar reservas",
-     *     description="Muestra una lista de reservas basada en la fecha especificada.",
+     *     summary="buscar reservas",
+     *     description="Muestra una busqueda de reservas basada en la fecha especificada ex 2023-11-20",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\Parameter(
      *         name="fecha",
      *         in="query",
@@ -124,11 +126,13 @@ class ReservasController extends Controller
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito del almacenamiento.
      *
      * @OA\Post(
-     *     path="/api/reservas/store",
-     *     operationId="storeReservas",
+     *     path="/api/reservas",
      *     tags={"Reservas"},
      *     summary="Crear reserva",
      *     description="Almacena un nuevo recurso de reserva en el almacenamiento.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -268,11 +272,13 @@ class ReservasController extends Controller
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la actualización.
      *
      * @OA\Patch(
-     *     path="/api/reservas/update",
-     *     operationId="updateReservas",
+     *     path="/api/reservas",
      *     tags={"Reservas"},
      *     summary="Actualizar reserva",
      *     description="Actualiza el recurso de reserva especificado en el almacenamiento.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -354,11 +360,13 @@ class ReservasController extends Controller
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la eliminación.
      *
      * @OA\Delete(
-     *     path="/api/reservas/destroy",
-     *     operationId="destroyReservas",
+     *     path="/api/reservas",
      *     tags={"Reservas"},
      *     summary="Eliminar reserva",
      *     description="Elimina el recurso de reserva especificado del almacenamiento.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\Response(
      *         response=201,
      *         description="Reserva eliminada correctamente",

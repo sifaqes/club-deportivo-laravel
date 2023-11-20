@@ -24,11 +24,13 @@ class SociosController extends Controller
      * @return JsonResponse Devuelve una respuesta JSON con el listado de socios.
      *
      * @OA\Get(
-     *     path="/api/socios/index",
-     *     operationId="indexSocios",
+     *     path="/api/socios",
      *     tags={"Socios"},
      *     summary="Listar socios",
      *     description="Muestra un listado de los recursos de socios.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\Response(
      *         response=201,
      *         description="Listado de socios obtenido correctamente",
@@ -80,11 +82,13 @@ class SociosController extends Controller
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito del almacenamiento.
      *
      * @OA\Post(
-     *     path="/api/socios/store",
-     *     operationId="storeSocios",
+     *     path="/api/socios",
      *     tags={"Socios"},
      *     summary="Crear socio",
      *     description="Almacena un nuevo recurso de socio en el almacenamiento.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -168,11 +172,13 @@ class SociosController extends Controller
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la actualización.
      *
      * @OA\Put(
-     *     path="/api/socios/update",
-     *     operationId="updateSocios",
+     *     path="/api/socios",
      *     tags={"Socios"},
      *     summary="Actualizar socio",
      *     description="Actualiza el recurso de socio especificado en el almacenamiento.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -250,11 +256,13 @@ class SociosController extends Controller
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la eliminación.
      *
      * @OA\Delete(
-     *     path="/api/socios/destroy",
-     *     operationId="destroySocios",
+     *     path="/api/socios",
      *     tags={"Socios"},
      *     summary="Eliminar socio",
      *     description="Elimina el recurso de socio especificado del almacenamiento.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(

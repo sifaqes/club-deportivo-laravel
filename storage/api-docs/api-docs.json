@@ -31,13 +31,13 @@
         }
     ],
     "paths": {
-        "/api/usuarios/register": {
+        "/api/register": {
             "post": {
                 "tags": [
                     "Usuarios"
                 ],
                 "summary": "Registrar un nuevo usuario",
-                "operationId": "6f1ca03039803801d9c470c1c818f3d3",
+                "operationId": "8a56853624e025573120a09a4c75d468",
                 "requestBody": {
                     "description": "Datos para registrar un nuevo usuario",
                     "required": true,
@@ -45,10 +45,6 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "NombreUsuario"
-                                    },
                                     "email": {
                                         "type": "string",
                                         "format": "email",
@@ -91,14 +87,14 @@
                 }
             }
         },
-        "/api/usuarios/login": {
+        "/api/login": {
             "post": {
                 "tags": [
                     "Usuarios"
                 ],
                 "summary": "Iniciar sesión",
                 "description": "Inicia sesión y devuelve un token de acceso.",
-                "operationId": "login",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -160,14 +156,14 @@
                 }
             }
         },
-        "/api/usuarios/logout": {
+        "/api/logout": {
             "get": {
                 "tags": [
                     "Usuarios"
                 ],
                 "summary": "Cerrar sesión",
                 "description": "Cierra la sesión del usuario revocando todos los tokens de acceso.",
-                "operationId": "logout",
+                "operationId": "3f19b742e4ead13f81ba0d6c0d46ac1b",
                 "responses": {
                     "201": {
                         "description": "Cierre de sesión exitoso",
@@ -207,63 +203,16 @@
                         "bearerAuth": []
                     }
                 ]
-            },
-            "delete": {
-                "tags": [
-                    "Usuarios"
-                ],
-                "summary": "Eliminar recurso",
-                "description": "Elimina el recurso especificado del almacenamiento.",
-                "operationId": "destroy",
-                "responses": {
-                    "201": {
-                        "description": "Usuario eliminado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Usuario eliminado"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "No autorizado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "No se pudo eliminar el usuario. Usuario no autenticado."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         },
-        "/api/usuarios/profil": {
+        "/api/perfil": {
             "get": {
                 "tags": [
                     "Usuarios"
                 ],
-                "summary": "Muestra una lista de recursos.",
+                "summary": "Listar recursos",
                 "description": "Muestra una lista de recursos.",
-                "operationId": "index",
+                "operationId": "4b21a78200b8ed460f84c66d4e7e0069",
                 "responses": {
                     "200": {
                         "description": "Operación exitosa",
@@ -305,14 +254,14 @@
                 ]
             }
         },
-        "/api/usuarios/update": {
-            "patch": {
+        "/api/update": {
+            "put": {
                 "tags": [
                     "Usuarios"
                 ],
                 "summary": "Actualizar recurso",
                 "description": "Actualiza el recurso especificado en el almacenamiento.",
-                "operationId": "update",
+                "operationId": "0533045b97c06136dcd13671333c81d4",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -395,6 +344,55 @@
                 ]
             }
         },
+        "/api/delete": {
+            "delete": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Eliminar recurso",
+                "description": "Elimina el recurso especificado del almacenamiento.",
+                "operationId": "585da9399b44d61faae6f2e0f6b76e7d",
+                "responses": {
+                    "201": {
+                        "description": "Usuario eliminado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario eliminado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "No se pudo eliminar el usuario. Usuario no autenticado."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/deportes": {
             "get": {
                 "tags": [
@@ -402,7 +400,7 @@
                 ],
                 "summary": "Listar deportes",
                 "description": "Muestra una lista de deportes.",
-                "operationId": "indexDeportes",
+                "operationId": "bfc9292a97ee7de249901347afd231ce",
                 "responses": {
                     "201": {
                         "description": "Operación exitosa",
@@ -446,91 +444,20 @@
                             }
                         }
                     }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Deportes"
-                ],
-                "summary": "Crear deporte",
-                "description": "Almacena un nuevo recurso de deporte en el almacenamiento.",
-                "operationId": "storeDeportes",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "deporte": {
-                                        "type": "string",
-                                        "example": "Nuevo Deporte"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
                 },
-                "responses": {
-                    "201": {
-                        "description": "Deporte creado correctamente",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Deporte Nuevo Deporte creado correctamente"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Error de validación",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "El campo deporte debe ser único."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error interno del servidor",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Mensaje de error interno"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
-                }
-            }
-        },
-        "/api/deportes/update": {
-            "patch": {
+                ]
+            },
+            "put": {
                 "tags": [
                     "Deportes"
                 ],
                 "summary": "Actualizar deporte",
                 "description": "Actualiza el recurso de deporte especificado en el almacenamiento.",
-                "operationId": "updateDeportes",
+                "operationId": "0498849f942c67966df8bc3ef592dcbb",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -616,17 +543,99 @@
                             }
                         }
                     }
-                }
-            }
-        },
-        "/api/deportes/destroy": {
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Deportes"
+                ],
+                "summary": "Crear deporte",
+                "description": "Almacena un nuevo recurso de deporte en el almacenamiento.",
+                "operationId": "a5c4acdceb1bc5c6d737c5018e98973f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "deporte": {
+                                        "type": "string",
+                                        "example": "Nuevo Deporte"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Deporte creado correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Deporte Nuevo Deporte creado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "El campo deporte debe ser único."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Mensaje de error interno"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
             "delete": {
                 "tags": [
                     "Deportes"
                 ],
                 "summary": "Eliminar deporte",
                 "description": "Elimina el recurso de deporte especificado en el almacenamiento y las pistas asociadas.",
-                "operationId": "destroyDeportes",
+                "operationId": "eaf7c791beda1311981fbf6983b74eec",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -708,7 +717,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/pistas": {
@@ -718,7 +732,7 @@
                 ],
                 "summary": "Listar pistas",
                 "description": "Muestra una lista de pistas.",
-                "operationId": "indexPistas",
+                "operationId": "6dd87f3224e87c5e8f642f27e84ff8b8",
                 "responses": {
                     "201": {
                         "description": "Operación exitosa",
@@ -762,91 +776,20 @@
                             }
                         }
                     }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Pistas"
-                ],
-                "summary": "Crear pista",
-                "description": "Almacena un nuevo recurso de pista en el almacenamiento.",
-                "operationId": "storePistas",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "pista": {
-                                        "type": "string",
-                                        "example": "Nueva Pista"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
                 },
-                "responses": {
-                    "201": {
-                        "description": "Pista creada correctamente",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Pista Nueva Pista creada correctamente"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Error de validación",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "El campo pista debe ser único."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error interno del servidor",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Mensaje de error interno"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
-                }
-            }
-        },
-        "/api/pistas/update": {
-            "patch": {
+                ]
+            },
+            "put": {
                 "tags": [
                     "Pistas"
                 ],
                 "summary": "Actualizar pista",
                 "description": "Actualiza el recurso de pista especificado en el almacenamiento.",
-                "operationId": "updatePistas",
+                "operationId": "6f29d8598f247f6dfa3691dacc7e0942",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -932,17 +875,99 @@
                             }
                         }
                     }
-                }
-            }
-        },
-        "/api/pistas/destroy": {
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Pistas"
+                ],
+                "summary": "Crear pista",
+                "description": "Almacena un nuevo recurso de pista en el almacenamiento.",
+                "operationId": "5fdd45c5fcc4f21781c5575945f47502",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "pista": {
+                                        "type": "string",
+                                        "example": "Nueva Pista"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Pista creada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Pista Nueva Pista creada correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "El campo pista debe ser único."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Mensaje de error interno"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
             "delete": {
                 "tags": [
                     "Pistas"
                 ],
                 "summary": "Eliminar pista",
                 "description": "Elimina el recurso de pista y su deporte asociado en el almacenamiento.",
-                "operationId": "destroyPistas",
+                "operationId": "37676ba45c2e033c04550e0f12633b20",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1024,17 +1049,22 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/reservas": {
-            "get": {
+        "/api/buscador": {
+            "post": {
                 "tags": [
                     "Reservas"
                 ],
-                "summary": "Listar reservas",
-                "description": "Muestra una lista de reservas basada en la fecha especificada.",
-                "operationId": "indexReservas",
+                "summary": "buscar reservas",
+                "description": "Muestra una busqueda de reservas basada en la fecha especificada ex 2023-11-20",
+                "operationId": "60da9e9dc952910e1947810100da91da",
                 "parameters": [
                     {
                         "name": "fecha",
@@ -1132,17 +1162,22 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/reservas/store": {
+        "/api/reservas": {
             "post": {
                 "tags": [
                     "Reservas"
                 ],
                 "summary": "Crear reserva",
                 "description": "Almacena un nuevo recurso de reserva en el almacenamiento.",
-                "operationId": "storeReservas",
+                "operationId": "3d9252887263d661d869b88882ad7660",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1262,17 +1297,83 @@
                             }
                         }
                     }
-                }
-            }
-        },
-        "/api/reservas/update": {
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Reservas"
+                ],
+                "summary": "Eliminar reserva",
+                "description": "Elimina el recurso de reserva especificado del almacenamiento.",
+                "operationId": "c46f94a455fe0f2c235420929ffd7e8e",
+                "responses": {
+                    "201": {
+                        "description": "Reserva eliminada correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Reserva eliminada con éxito."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No se encontró ninguna reserva para eliminar",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "No se encontró ninguna reserva para eliminar."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Mensaje de error interno"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
             "patch": {
                 "tags": [
                     "Reservas"
                 ],
                 "summary": "Actualizar reserva",
                 "description": "Actualiza el recurso de reserva especificado en el almacenamiento.",
-                "operationId": "updateReservas",
+                "operationId": "0e8fbf0cc19091fe31ebd1fcfa9c218e",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1358,77 +1459,22 @@
                             }
                         }
                     }
-                }
-            }
-        },
-        "/api/reservas/destroy": {
-            "delete": {
-                "tags": [
-                    "Reservas"
-                ],
-                "summary": "Eliminar reserva",
-                "description": "Elimina el recurso de reserva especificado del almacenamiento.",
-                "operationId": "destroyReservas",
-                "responses": {
-                    "201": {
-                        "description": "Reserva eliminada correctamente",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Reserva eliminada con éxito."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "No se encontró ninguna reserva para eliminar",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "No se encontró ninguna reserva para eliminar."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error interno del servidor",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Mensaje de error interno"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
-                }
+                ]
             }
         },
-        "/api/socios/index": {
+        "/api/socios": {
             "get": {
                 "tags": [
                     "Socios"
                 ],
                 "summary": "Listar socios",
                 "description": "Muestra un listado de los recursos de socios.",
-                "operationId": "indexSocios",
+                "operationId": "569b4f5a1146387d72c7b7178b6e1bfc",
                 "responses": {
                     "201": {
                         "description": "Listado de socios obtenido correctamente",
@@ -1472,97 +1518,20 @@
                             }
                         }
                     }
-                }
-            }
-        },
-        "/api/socios/store": {
-            "post": {
-                "tags": [
-                    "Socios"
-                ],
-                "summary": "Crear socio",
-                "description": "Almacena un nuevo recurso de socio en el almacenamiento.",
-                "operationId": "storeSocios",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "nombre": {
-                                        "type": "string",
-                                        "example": "John"
-                                    },
-                                    "apellidos": {
-                                        "type": "string",
-                                        "example": "Doe"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
                 },
-                "responses": {
-                    "201": {
-                        "description": "Socio creado correctamente",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Socio creado correctamente"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Error de validación",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Mensaje de error de validación"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error interno del servidor",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Mensaje de error interno"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
-                }
-            }
-        },
-        "/api/socios/update": {
+                ]
+            },
             "put": {
                 "tags": [
                     "Socios"
                 ],
                 "summary": "Actualizar socio",
                 "description": "Actualiza el recurso de socio especificado en el almacenamiento.",
-                "operationId": "updateSocios",
+                "operationId": "74ec5b14de4f33b6ab29d7e92dc42ba8",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1652,17 +1621,103 @@
                             }
                         }
                     }
-                }
-            }
-        },
-        "/api/socios/destroy": {
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Socios"
+                ],
+                "summary": "Crear socio",
+                "description": "Almacena un nuevo recurso de socio en el almacenamiento.",
+                "operationId": "3e32561a2af457d577207c093adcd185",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nombre": {
+                                        "type": "string",
+                                        "example": "John"
+                                    },
+                                    "apellidos": {
+                                        "type": "string",
+                                        "example": "Doe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Socio creado correctamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Socio creado correctamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Error de validación",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Mensaje de error de validación"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Mensaje de error interno"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
             "delete": {
                 "tags": [
                     "Socios"
                 ],
                 "summary": "Eliminar socio",
                 "description": "Elimina el recurso de socio especificado del almacenamiento.",
-                "operationId": "destroySocios",
+                "operationId": "a2ffa7903362a271e99e6d414c970bf1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1744,7 +1799,21 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     }

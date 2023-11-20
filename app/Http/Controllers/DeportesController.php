@@ -24,10 +24,12 @@ class DeportesController extends Controller
      *
      * @OA\Get(
      *     path="/api/deportes",
-     *     operationId="indexDeportes",
      *     tags={"Deportes"},
      *     summary="Listar deportes",
      *     description="Muestra una lista de deportes.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\Response(
      *         response=201,
      *         description="Operación exitosa",
@@ -79,10 +81,12 @@ class DeportesController extends Controller
      *
      * @OA\Post(
      *     path="/api/deportes",
-     *     operationId="storeDeportes",
      *     tags={"Deportes"},
      *     summary="Crear deporte",
      *     description="Almacena un nuevo recurso de deporte en el almacenamiento.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -164,12 +168,14 @@ class DeportesController extends Controller
      * @param Request $request
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la actualización.
      *
-     * @OA\Patch(
-     *     path="/api/deportes/update",
-     *     operationId="updateDeportes",
+     * @OA\Put(
+     *     path="/api/deportes",
      *     tags={"Deportes"},
      *     summary="Actualizar deporte",
      *     description="Actualiza el recurso de deporte especificado en el almacenamiento.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -243,11 +249,13 @@ class DeportesController extends Controller
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la eliminación.
      *
      * @OA\Delete(
-     *     path="/api/deportes/destroy",
-     *     operationId="destroyDeportes",
+     *     path="/api/deportes",
      *     tags={"Deportes"},
      *     summary="Eliminar deporte",
      *     description="Elimina el recurso de deporte especificado en el almacenamiento y las pistas asociadas.",
+     *          security={
+     *          {"bearerAuth": {}}
+     *      },
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(

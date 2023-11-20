@@ -23,6 +23,12 @@ use OpenApi\Annotations as OA;
  *     url=L5_SWAGGER_CONST_HOST,
  *     description="API Reservas"
  * )
+ * @OA\SecurityScheme(
+ *      type="http",
+ *      scheme="bearer",
+ *      bearerFormat="JWT",
+ *      securityScheme="bearerAuth",
+ *  )
  * **/
 
 class AuthController extends Controller
@@ -36,7 +42,6 @@ class AuthController extends Controller
      *         required=true,
      *         description="Datos para registrar un nuevo usuario",
      *         @OA\JsonContent(
-     *             @OA\Property(property="name", type="string", example="NombreUsuario"),
      *             @OA\Property(property="email", type="string", format="email", example="usuario@dominio.com"),
      *             @OA\Property(property="password", type="string", example="contrasena"),
      *             @OA\Property(property="password_confirmation", type="string", example="contrasena")
@@ -84,7 +89,6 @@ class AuthController extends Controller
     /**
      * @OA\Post(
      *     path="/api/login",
-     *     operationId="login",
      *     tags={"Usuarios"},
      *     summary="Iniciar sesión",
      *     description="Inicia sesión y devuelve un token de acceso.",
@@ -140,9 +144,8 @@ class AuthController extends Controller
      * @return JsonResponse
      * @throws AuthorizationException Si el usuario no está autenticado.
      *
-     * @OA\Post(
+     * @OA\Get(
      *     path="/api/logout",
-     *     operationId="logout",
      *     tags={"Usuarios"},
      *     summary="Cerrar sesión",
      *     description="Cierra la sesión del usuario revocando todos los tokens de acceso.",
@@ -180,8 +183,7 @@ class AuthController extends Controller
      * @return JsonResponse Devuelve una respuesta JSON con la información del usuario autenticado.
      *
      * @OA\Get(
-     *     path="/api/resource",
-     *     operationId="index",
+     *     path="/api/perfil",
      *     tags={"Usuarios"},
      *     summary="Listar recursos",
      *     description="Muestra una lista de recursos.",
@@ -204,7 +206,6 @@ class AuthController extends Controller
      *     )
      * )
      */
-
     public function index(Request $request): JsonResponse
     {
         $user = $request->User();
@@ -249,9 +250,8 @@ class AuthController extends Controller
      * @param Request $request
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la actualización.
      *
-     * @OA\Patch(
-     *     path="/api/resource/update",
-     *     operationId="update",
+     * @OA\Put(
+     *     path="/api/update",
      *     tags={"Usuarios"},
      *     summary="Actualizar recurso",
      *     description="Actualiza el recurso especificado en el almacenamiento.",
@@ -321,8 +321,7 @@ class AuthController extends Controller
      * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la eliminación.
      *
      * @OA\Delete(
-     *     path="/api/resource/destroy",
-     *     operationId="destroy",
+     *     path="/api/delete",
      *     tags={"Usuarios"},
      *     summary="Eliminar recurso",
      *     description="Elimina el recurso especificado del almacenamiento.",
