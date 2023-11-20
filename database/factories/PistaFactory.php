@@ -7,7 +7,7 @@ use App\Models\Pista;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Pista>
+ * @extends Factory<Pista>
  */
 class PistaFactory extends Factory
 {
@@ -18,7 +18,7 @@ class PistaFactory extends Factory
      */
     protected $model = Pista::class;
 
-    public function definition()
+    public function definition(): array
     {
         return [
             'deporte_id' => Deporte::factory(),

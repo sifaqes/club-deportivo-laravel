@@ -22,6 +22,9 @@ class Deporte extends Model
     ];
 
 
+    /**
+     * @return HasMany
+     */
     public function pistas(): HasMany
     {
         return $this->hasMany(Pista::class);

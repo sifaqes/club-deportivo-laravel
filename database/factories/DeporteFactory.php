@@ -6,7 +6,7 @@ use App\Models\Deporte;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Deporte>
+ * @extends Factory<Deporte>
  */
 class DeporteFactory extends Factory
 {

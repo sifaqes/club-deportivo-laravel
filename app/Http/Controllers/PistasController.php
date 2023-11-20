@@ -40,7 +40,7 @@ class PistasController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
 
         $request->validate([
@@ -70,7 +70,7 @@ class PistasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pistas $pistas)
+    public function show(Request $pistas)
     {
         //
     }
@@ -78,7 +78,7 @@ class PistasController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Pistas $pistas)
+    public function edit(Request $pistas)
     {
         //
     }
@@ -94,7 +94,7 @@ class PistasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): JsonResponse
     {
         $request->validate([
             'id' => 'required|integer|exists:pistas,id',

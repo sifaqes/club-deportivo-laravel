@@ -28,11 +28,10 @@ class Reserva extends Model
     ];
 
     // Relación con el modelo User
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-
 
     public function socio(): BelongsTo
     {

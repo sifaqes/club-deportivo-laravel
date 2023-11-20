@@ -3,18 +3,15 @@
     "info": {
         "title": "API club deportivo",
         "description": "API Reservas club deportivo",
-        "contact": {
-            "email": "siphaxzer@gmail.com"
-        },
         "version": "1.0.0"
     },
     "servers": [
         {
-            "url": "localhost:8000",
+            "url": "http://localhost:8000",
             "description": "API Reservas"
         },
         {
-            "url": "localhost:8000"
+            "url": "http://localhost:8000"
         }
     ],
     "paths": {

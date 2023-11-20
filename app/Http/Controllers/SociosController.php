@@ -50,8 +50,8 @@ class SociosController extends Controller
 
             $socio = new Socio();
 
-            $socio->nombre = $request->input('nombre');
-            $socio->apellidos = $request->input('apellidos');
+            $this->$socio->nombre = $request->input('nombre');
+            $this->$socio->apellidos = $request->input('apellidos');
 
             $socio->save();
 
@@ -91,14 +91,13 @@ class SociosController extends Controller
             'apellidos' => 'required',
         ]);
 
-        $socioId = $request->socioId;
-        $nombre = $request->nombre;
-        $apellidos = $request->apellidos;
+        $socioId = $this->$request->socioId;
+        $nombre = $this->$request->nombre;
+        $apellidos = $this->$request->apellidos;
 
         try {
 
                 $socio = Socio::find($socioId);
-
                 $socio->nombre = $nombre;
                 $socio->apellidos = $apellidos;
 

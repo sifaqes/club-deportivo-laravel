@@ -6,7 +6,6 @@ use App\Models\Deporte;
 use App\Models\Pista;
 use App\Models\Reserva;
 use App\Models\Socio;
-use DateTime;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -63,6 +62,7 @@ class ReservasController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
      */
     public function store(Request $request): JsonResponse
     {
@@ -79,7 +79,7 @@ class ReservasController extends Controller
 
         // inputs
         $pistaId = $request->input('pista_id');
-        $hora = $request->horaInicio;
+        $hora = $this->$request->horaInicio;
 
         //User
         $userId = Auth::id();
@@ -111,7 +111,7 @@ class ReservasController extends Controller
 
             $fecha = now()->toDateString();
 
-            $horaInicio = $request->horaInicio;
+            $horaInicio = $this->$request->horaInicio;
             $horaFin = Carbon::createFromFormat('H:i', $horaInicio)->addHour()->format('H:i');
 
             $reserva = [
@@ -157,7 +157,6 @@ class ReservasController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  int  $reservaId
      * @return JsonResponse
      */
     public function update(Request $request): JsonResponse
@@ -168,21 +167,20 @@ class ReservasController extends Controller
             'nuevaHora' => 'required|date_format:H:00',
         ]);
 
-        $reservaId = $request->reservaId;
-        $nuevaHora = $request->nuevaHora;
+        $reservaId = $this->$request->reservaId;
+        $nuevaHora = $this->$request->nuevaHora;
 
-        $user = Auth::user();
+        //$user = Auth::user();
 
-        $reserva = Reserva::where('id', $reservaId)->where('socio_id', $user->getAuthIdentifier())->first();
+        $reserva = Reserva::where('id', $reservaId)->first();
         if (!$reserva) {
             return response()->json(['error' => 'No se encontró ninguna reserva para actualizar.'], 404);
         }
 
-        $dateTime = DateTime::createFromFormat("H:i:s", $reserva->horaInicio);
-
+        //$dateTime = DateTime::createFromFormat("H:i:s", $reserva->horaInicio);
         // en caso que la reserva sea anterior a la hora actual no se puede modificar antes 2 horas
-        $horaReserva  = $dateTime->format("H:i");
-        $horaActual = date('H:00');
+        //$horaReserva  = $dateTime->format("H:i");
+        //$horaActual = date('H:00');
 
         try {
 
@@ -190,8 +188,8 @@ class ReservasController extends Controller
 
             $reserva->save();
 
-            return response()->json(['message' =>   'Reserva actualizada a '.$nuevaHora.' con éxito.'], 200);
-        } catch (\Exception $e) {
+            return response()->json(['message' =>   'Reserva actualizada a '.$nuevaHora.' con éxito.'], 201);
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -218,8 +216,8 @@ class ReservasController extends Controller
 
             $reserva->delete();
 
-            return response()->json(['message' => 'Reserva eliminada con éxito.'], 200);
-        } catch (\Exception $e) {
+            return response()->json(['message' => 'Reserva eliminada con éxito.'], 201);
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
 

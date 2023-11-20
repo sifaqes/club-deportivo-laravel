@@ -6,7 +6,7 @@ use App\Models\Socio;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Socio>
+ * @extends Factory<Socio>
  */
 class SocioFactory extends Factory
 {

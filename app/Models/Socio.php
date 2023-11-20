@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @method static where(string $string, mixed $id)
+ * @method static find(int $id)
  */
 class Socio extends Model
 {

@@ -118,6 +118,7 @@ class DeportesController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @property string $id
      */
     public function destroy(Request $request): JsonResponse
     {
@@ -137,12 +138,14 @@ class DeportesController extends Controller
 
         $pistas = Pista::where('deporte_id', $deporteId)->get();
 
+        $id =[];
+
         foreach ($pistas as $pista) {
-            $id [] = $pista->getAttributes()['id'];
+            $id = $pista->getAttributes()['id'];
         }
 
-//        $deportes->delete();
+        //$deportes->delete();
 
-        return response()->json(['message' => 'method not allow.'], 201);
+        return response()->json(['message' => $id.' method not allow.'], 201);
     }
 }
