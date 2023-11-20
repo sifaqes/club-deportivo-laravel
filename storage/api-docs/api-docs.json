@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "http://my-default-host.com",
+            "url": "http://localhost:8000",
             "description": "API Reservas"
         },
         {
@@ -27,17 +27,17 @@
             "description": "Class SociosController"
         },
         {
-            "url": "api"
+            "url": "http://localhost:8000"
         }
     ],
     "paths": {
-        "/api/register": {
+        "/api/usuarios/register": {
             "post": {
                 "tags": [
                     "Usuarios"
                 ],
                 "summary": "Registrar un nuevo usuario",
-                "operationId": "8a56853624e025573120a09a4c75d468",
+                "operationId": "6f1ca03039803801d9c470c1c818f3d3",
                 "requestBody": {
                     "description": "Datos para registrar un nuevo usuario",
                     "required": true,
@@ -91,7 +91,7 @@
                 }
             }
         },
-        "/api/login": {
+        "/api/usuarios/login": {
             "post": {
                 "tags": [
                     "Usuarios"
@@ -160,8 +160,8 @@
                 }
             }
         },
-        "/api/logout": {
-            "post": {
+        "/api/usuarios/logout": {
+            "get": {
                 "tags": [
                     "Usuarios"
                 ],
@@ -207,14 +207,61 @@
                         "bearerAuth": []
                     }
                 ]
+            },
+            "delete": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Eliminar recurso",
+                "description": "Elimina el recurso especificado del almacenamiento.",
+                "operationId": "destroy",
+                "responses": {
+                    "201": {
+                        "description": "Usuario eliminado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario eliminado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "No se pudo eliminar el usuario. Usuario no autenticado."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/resource": {
+        "/api/usuarios/profil": {
             "get": {
                 "tags": [
                     "Usuarios"
                 ],
-                "summary": "Listar recursos",
+                "summary": "Muestra una lista de recursos.",
                 "description": "Muestra una lista de recursos.",
                 "operationId": "index",
                 "responses": {
@@ -258,7 +305,7 @@
                 ]
             }
         },
-        "/api/resource/update": {
+        "/api/usuarios/update": {
             "patch": {
                 "tags": [
                     "Usuarios"
@@ -333,55 +380,6 @@
                                         "error": {
                                             "type": "string",
                                             "example": "El formato de correo electrónico no es válido."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/resource/destroy": {
-            "delete": {
-                "tags": [
-                    "Usuarios"
-                ],
-                "summary": "Eliminar recurso",
-                "description": "Elimina el recurso especificado del almacenamiento.",
-                "operationId": "destroy",
-                "responses": {
-                    "201": {
-                        "description": "Usuario eliminado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Usuario eliminado"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "No autorizado",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "No se pudo eliminar el usuario. Usuario no autenticado."
                                         }
                                     },
                                     "type": "object"
