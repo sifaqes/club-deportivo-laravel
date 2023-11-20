@@ -88,7 +88,26 @@ class PistasController extends Controller
      */
     public function update(Request $request)
     {
-        //
+        $request -> validate([
+            'id' => 'required|integer|exists:pistas,id',
+            'pista' => 'required|max:50',
+        ]);
+        $id = $request->input('id');
+        $pistaNueva = $request->input('pista');
+
+        $pista = Pista::all()->where('id', $id)->first();
+
+        try {
+            if (!empty($pista)){
+                $pista->pista = $pistaNueva;
+                $pista->save();
+                return response()->json(['message' => 'Pista '.$pista['pista'].' actualizada correctamente'], 201);
+            }else{
+                return response()->json(['message' => 'No existe la pista'], 201);
+            }
+        }catch (Exception $e){
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 
     /**

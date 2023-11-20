@@ -133,7 +133,7 @@ class SociosController extends Controller
         if (Reserva::where('socio_id', $id)->exists()) {
             Reserva::where('socio_id', $id)->delete();
         }
-        
+
         Socio::destroy($id);
 
         Socio::where('id', $id)->delete();

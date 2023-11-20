@@ -11,7 +11,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
 class ReservasController extends Controller
 {
@@ -68,18 +67,13 @@ class ReservasController extends Controller
     {
 
         $request->validate([
-            'pista_id' => ['required',
-                Rule::unique('reservas')->where(function ($query) use ($request) {
-                    $horaInicio =  $request->Get('horaInicio');
-                    return $query->where('horaInicio', $horaInicio);
-                }),
-            ],
-            'horaInicio' => 'required|date_format:H:00',
+            'pista_id' => 'required|integer|exists:pistas,id',
+            'horaInicio' => 'required|date_format:H:00'
         ]);
 
         // inputs
         $pistaId = $request->input('pista_id');
-        $hora = $this->$request->horaInicio;
+        $hora = $request->horaInicio;
 
         //User
         $userId = Auth::id();
@@ -111,7 +105,7 @@ class ReservasController extends Controller
 
             $fecha = now()->toDateString();
 
-            $horaInicio = $this->$request->horaInicio;
+            $horaInicio = $request->horaInicio;
             $horaFin = Carbon::createFromFormat('H:i', $horaInicio)->addHour()->format('H:i');
 
             $reserva = [
@@ -167,8 +161,8 @@ class ReservasController extends Controller
             'nuevaHora' => 'required|date_format:H:00',
         ]);
 
-        $reservaId = $this->$request->reservaId;
-        $nuevaHora = $this->$request->nuevaHora;
+        $reservaId = $request->reservaId;
+        $nuevaHora = $request->nuevaHora;
 
         //$user = Auth::user();
 

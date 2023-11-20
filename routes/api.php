@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group( function (){
 
     // ReservasController
     Route::post('reservas', [ReservasController::class,'store']);
-    Route::get('reservas/search', [ReservasController::class,'index']);
+    Route::post('reservas/search', [ReservasController::class,'index']);
     Route::delete('reservas', [ReservasController::class,'destroy']);
     Route::put('reservas', [ReservasController::class,'update']);
 

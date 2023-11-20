@@ -94,26 +94,28 @@ class DeportesController extends Controller
     public function update(Request $request): JsonResponse
     {
         $request->validate([
-            'deporte' => 'required|string|exists:deportes,deporte',
-            'nuevoDeporte' => 'required|string',
+            'id' => 'required|integer|exists:deportes,id',
+            'nuevoDeporte' => 'required|string|max:50',
         ]);
 
-        $deporte = $request->input('deporte');
+        $id = $request->input('id');
         $nuevoDeporte = $request->input('nuevoDeporte');
 
+        $deportes = Deporte::where('id', $id)->first();
+
         try {
-            $deporteSql = Deporte::where('deporte', $deporte)->first();
-
-            $deporteSql->deporte = $nuevoDeporte;
-
-            $deporteSql->where('deporte', $deporte)->update(['deporte' => $nuevoDeporte]);
-
-            $deporteSql->save();
-
-            return response()->json(['message' => 'Deporte '.$deporteSql->deporte.' modificado correctamente '], 201);
+            if (!empty($deportes)){
+                $deportes->deporte = $nuevoDeporte;
+                Deporte::where('id', $id)->update(['deporte' => $nuevoDeporte]);
+                $deportes->save();
+                return response()->json(['message' => $nuevoDeporte.'Deporte modificado correctamente'], 201);
+            }else{
+                return response()->json(['message' => 'Deporte no encontrado'], 404);
+            }
         }catch (Exception $e){
             return response()->json(['error' => $e->getMessage()]);
         }
+
     }
 
     /**
@@ -123,29 +125,21 @@ class DeportesController extends Controller
     public function destroy(Request $request): JsonResponse
     {
         $request->validate([
-            'deporte' => 'required|string|exists:deportes,deporte',
+            'id' => 'required|integer|exists:deportes,id',
         ]);
 
-        $deporte = $request->input('deporte');
+        $id = $request->input('id');
 
-        $deportes = Deporte::where('deporte', $deporte)->first();
+        if(Pista::where('deporte_id', $id)->exists()){
 
-        if (!$deportes) {
-            return response()->json(['message' => 'Deporte no encontrado'], 404);
+            Pista::where('deporte_id', $id)->delete();
+
+            Deporte::where('id', $id)->delete();
+
+            return response()->json(['message' => 'Deporte eliminado correctamente && Pista eliminado correctamente'], 201);
         }
 
-        $deporteId = $deportes->getAttributes()['id'];
+        return response()->json(['error' => 'Deporte no eliminado correctamente'], 404);
 
-        $pistas = Pista::where('deporte_id', $deporteId)->get();
-
-        $id =[];
-
-        foreach ($pistas as $pista) {
-            $id = $pista->getAttributes()['id'];
-        }
-
-        //$deportes->delete();
-
-        return response()->json(['message' => $id.' method not allow.'], 201);
     }
 }
