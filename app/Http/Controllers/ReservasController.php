@@ -113,7 +113,7 @@ class ReservasController extends Controller
             return response()->json(['reservas' =>  $result], 201);
         }   catch (Exception $e){
 
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
 
         }
 
@@ -254,7 +254,8 @@ class ReservasController extends Controller
 
         }catch (Exception $e){
 
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
+
         }
     }
 
@@ -418,7 +419,9 @@ class ReservasController extends Controller
 
             return response()->json(['message' => 'Reserva eliminada con éxito.'], 201);
         } catch (Exception $e) {
+
             return response()->json(['error' => $e->getMessage()], 500);
+
         }
 
     }

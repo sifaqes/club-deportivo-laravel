@@ -208,8 +208,15 @@ class AuthController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $user = $request->User();
-        return response()->json($user);
+        try {
+            $user = $request->User();
+            return response()->json(['message '=> $user ], 200);
+
+        }   catch (AuthorizationException $e) {
+            return response()->json(['message' => 'No autorizado para acceder a este recurso.'], 401);
+        }
+
+
     }
 
     /**
@@ -301,17 +308,21 @@ class AuthController extends Controller
         $password = $request->input('password');
         $newPassword = $request->input('newPassword');
 
+        try {
+            $user = auth()->user();
+            $pass = $user->getAuthPassword();
+            if (!Hash::check($password, $pass)) {
+                return response()->json(['error' => 'Contraseña actual incorrecta'], 401);
+            }
 
-        $user = auth()->user();
-        $pass = $user->getAuthPassword();
-        if (!Hash::check($password, $pass)) {
-            return response()->json(['error' => 'Contraseña actual incorrecta'], 401);
+            $user->password = Hash::make($newPassword);
+            $user->save();
+
+            return response()->json(['message' => 'Contraseña actualizada exitosamente']);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'No autorizado para acceder a este recurso.'], 401);
         }
 
-        $user->password = Hash::make($newPassword);
-        $user->save();
-
-        return response()->json(['message' => 'Contraseña actualizada exitosamente']);
     }
 
 
@@ -346,10 +357,14 @@ class AuthController extends Controller
      */
     public function destroy(): JsonResponse
     {
-        $user = auth()->user();
-        $user->tokens()->delete();
-        $user->delete();
-        return response()->json(['message' => 'Usuario eliminado'], 201);
+        try {
+            $user = auth()->user();
+            $user->tokens()->delete();
+            $user->delete();
+            return response()->json(['message' => 'Usuario eliminado'], 201);
+        } catch (AuthorizationException $e) {
+            return response()->json(['error' => 'No se pudo eliminar el usuario. Usuario no autenticado.'], 401);
+        }
     }
 }
 

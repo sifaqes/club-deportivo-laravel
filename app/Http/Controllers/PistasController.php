@@ -61,7 +61,7 @@ class PistasController extends Controller
 
         }catch (Exception $e){
 
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
 
         }
     }
@@ -140,7 +140,7 @@ class PistasController extends Controller
 
         }   catch (Exception $e){
 
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
 
         }
 
@@ -235,7 +235,7 @@ class PistasController extends Controller
                 return response()->json(['message' => 'No existe la pista'], 201);
             }
         }catch (Exception $e){
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -314,7 +314,7 @@ class PistasController extends Controller
                 return response()->json(['message' => 'No existe la pista o el deporte'], 201);
             }
         }catch (Exception $e){
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }

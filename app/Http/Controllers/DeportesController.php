@@ -60,7 +60,7 @@ class DeportesController extends Controller
 
         }catch (Exception $e){
 
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
 
         }
     }
@@ -140,7 +140,7 @@ class DeportesController extends Controller
 
         }catch (Exception $e){
 
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500 );
 
         }
 
@@ -237,7 +237,7 @@ class DeportesController extends Controller
                 return response()->json(['message' => 'Deporte no encontrado'], 404);
             }
         }catch (Exception $e){
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500 );
         }
 
     }
@@ -302,16 +302,26 @@ class DeportesController extends Controller
 
         $id = $request->input('id');
 
-        if(Pista::where('deporte_id', $id)->exists()){
+        try {
 
-            Pista::where('deporte_id', $id)->delete();
+            if(Pista::where('deporte_id', $id)->exists()){
 
-            Deporte::where('id', $id)->delete();
+                Pista::where('deporte_id', $id)->delete();
 
-            return response()->json(['message' => 'Deporte eliminado correctamente && Pista eliminado correctamente'], 201);
+                Deporte::where('id', $id)->delete();
+
+                return response()->json(['message' => 'Deporte eliminado correctamente && Pista eliminado correctamente'], 201);
+            }
+
+            return response()->json(['message' => 'Deporte no eliminado correctamente'], 404);
+
+        }   catch (Exception $e){
+
+            return response()->json(['error' => $e->getMessage()], 500 );
+
         }
 
-        return response()->json(['error' => 'Deporte no eliminado correctamente'], 404);
+
 
     }
 }
