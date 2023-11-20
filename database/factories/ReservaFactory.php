@@ -29,7 +29,6 @@ class ReservaFactory extends Factory
         $socios = Socio::factory()->create()->all()->random();
         $pistas = Pista::factory()->create()->all()->random();
 
-
         $deporte = $pistas->all()->random()->deporte;
 
         $hora_reserva = now()->setHour(9)->setMinute(0)->setSecond(0);
