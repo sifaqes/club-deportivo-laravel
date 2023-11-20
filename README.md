@@ -7,9 +7,37 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+
+## Instalación
+clon el repositorio
+
+    git clone
+
+luegho ingrese a la carpeta
+
+    cd prueba
+
+instale las dependencias
+
+    composer install
+
+copie el archivo de configuración y genere la clave de la aplicación.
+
+    cp .env.example .env
+    php artisan key:generate
+
+configure las variables de entorno en el archivo `.env` y ejecute las migraciones y los seeders
+no olvide arrancar el motor Mysql.
+
+    php artisan migrate --seed
+
+
+## Ejecutar el proyecto
+
+    php artisan serve
+
 ## Diagrame
 <a href="https://github.com/sifaqes/prueba/blob/master/diagram.png"><img src="https://github.com/sifaqes/prueba/blob/master/diagram.png" alt="Diagrame"></a>
-
 
 
 ## About Laravel
