@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeportesController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\PistasController;
+use App\Http\Controllers\ReservasController;
+use App\Http\Controllers\SociosController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,22 +18,45 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::post('register',[AuthController::class,'register']);
 
 Route::post('login',[AuthController::class,'login']);
+Route::post('register',[AuthController::class,'register']);
 
 Route::middleware('auth:sanctum')->group( function (){
 
-    Route::get('deportes',[DeportesController::class,'index']);
-
-    Route::post('update',[AuthController::class,'update']);
-
+    // UsuariosController
+    Route::get('profil',[AuthController::class, 'index']);
+    Route::put('update',[AuthController::class, 'update']);
+    Route::delete('delete',[AuthController::class, 'destroy']);
     Route::get('logout',[AuthController::class,'logout']);
 
+    // ReservasController
+    Route::post('reservas', [ReservasController::class,'store']);
+    Route::post('reservas/search', [ReservasController::class,'index']);
+    Route::delete('reservas', [ReservasController::class,'destroy']);
+    Route::put('reservas', [ReservasController::class,'update']);
+
+
+    // DeportesController
+    Route::post('deportes', [DeportesController::class,'store']);
+    Route::get('deportes', [DeportesController::class,'index']);
+    Route::put('deportes', [DeportesController::class,'update']);
+    Route::delete('deportes', [DeportesController::class,'destroy']);
+
+    // PistasController
+    Route::post('pistas', [PistasController::class,'store']);
+    Route::get('pistas', [PistasController::class,'index']);
+    Route::put('pistas', [PistasController::class,'update']);
+    Route::delete('pistas', [PistasController::class,'destroy']);
+
+    // SociosController
+    Route::post('socios', [SociosController::class,'store']);
+    Route::get('socios', [SociosController::class,'index']);
+    Route::put('socios', [SociosController::class,'update']);
+    Route::delete('socios', [SociosController::class,'destroy']);
+
 });
+
+
 
 
