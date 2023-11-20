@@ -7,11 +7,47 @@ use App\Models\Pista;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
+
+/**
+ * Class PistasController
+ * @package App\Http\Controllers
+ * @OA\Server(url="http://localhost:8000")
+ */
 
 class PistasController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra una lista de recursos.
+     *
+     * @return JsonResponse Devuelve una respuesta JSON con la lista de pistas.
+     *
+     * @OA\Get(
+     *     path="/api/pistas",
+     *     operationId="indexPistas",
+     *     tags={"Pistas"},
+     *     summary="Listar pistas",
+     *     description="Muestra una lista de pistas.",
+     *     @OA\Response(
+     *         response=201,
+     *         description="Operación exitosa",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="pistas", type="array", @OA\Items(
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="pista", type="string")
+     *             ))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error interno")
+     *         )
+     *     )
+     * )
+     *
+     * @return JsonResponse
      */
     public function index(): JsonResponse
     {
@@ -28,7 +64,6 @@ class PistasController extends Controller
         }
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -38,7 +73,47 @@ class PistasController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacena un nuevo recurso en el almacenamiento.
+     *
+     * @param Request $request
+     * @return JsonResponse Devuelve una respuesta JSON indicando el éxito del almacenamiento.
+     *
+     * @OA\Post(
+     *     path="/api/pistas",
+     *     operationId="storePistas",
+     *     tags={"Pistas"},
+     *     summary="Crear pista",
+     *     description="Almacena un nuevo recurso de pista en el almacenamiento.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="pista", type="string", example="Nueva Pista")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Pista creada correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Pista Nueva Pista creada correctamente")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="El campo pista debe ser único.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error interno")
+     *         )
+     *     )
+     * )
+     *
+     * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
@@ -84,7 +159,55 @@ class PistasController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza el recurso especificado en el almacenamiento.
+     *
+     * @param Request $request
+     * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la actualización.
+     *
+     * @OA\Patch(
+     *     path="/api/pistas/update",
+     *     operationId="updatePistas",
+     *     tags={"Pistas"},
+     *     summary="Actualizar pista",
+     *     description="Actualiza el recurso de pista especificado en el almacenamiento.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example="1"),
+     *             @OA\Property(property="pista", type="string", example="Nueva Pista")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Pista actualizada correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Nueva Pista actualizada correctamente")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No existe la pista",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="No existe la pista")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="El campo pista debe tener un máximo de 50 caracteres.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error interno")
+     *         )
+     *     )
+     * )
+     *
+     * @return JsonResponse
      */
     public function update(Request $request)
     {
@@ -111,7 +234,54 @@ class PistasController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina el recurso especificado del almacenamiento.
+     *
+     * @param Request $request
+     * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la eliminación.
+     *
+     * @OA\Delete(
+     *     path="/api/pistas/destroy",
+     *     operationId="destroyPistas",
+     *     tags={"Pistas"},
+     *     summary="Eliminar pista",
+     *     description="Elimina el recurso de pista y su deporte asociado en el almacenamiento.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example="1")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Pista y deporte eliminados correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Pista [Nombre de la pista] de deporte [Nombre del deporte] eliminada correctamente")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No existe la pista o el deporte",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="No existe la pista o el deporte")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="El campo id debe ser un número entero válido.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error interno")
+     *         )
+     *     )
+     * )
+     *
+     * @return JsonResponse
      */
     public function destroy(Request $request): JsonResponse
     {

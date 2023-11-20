@@ -7,12 +7,48 @@ use App\Models\Socio;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 use function PHPUnit\Framework\isFalse;
+
+/**
+ * Class SociosController
+ * @package App\Http\Controllers
+ * @OA\Server(url="http://localhost:8000")
+ */
 
 class SociosController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra un listado de los recursos de socios.
+     *
+     * @return JsonResponse Devuelve una respuesta JSON con el listado de socios.
+     *
+     * @OA\Get(
+     *     path="/api/socios/index",
+     *     operationId="indexSocios",
+     *     tags={"Socios"},
+     *     summary="Listar socios",
+     *     description="Muestra un listado de los recursos de socios.",
+     *     @OA\Response(
+     *         response=201,
+     *         description="Listado de socios obtenido correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="socios", type="array", @OA\Items(
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="nombre", type="string")
+     *             ))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error interno")
+     *         )
+     *     )
+     * )
+     *
+     * @return JsonResponse
      */
     public function index(): JsonResponse
     {
@@ -37,9 +73,48 @@ class SociosController extends Controller
 
     }
 
-
     /**
+     * Almacena un nuevo recurso de socio en el almacenamiento.
+     *
      * @param Request $request
+     * @return JsonResponse Devuelve una respuesta JSON indicando el éxito del almacenamiento.
+     *
+     * @OA\Post(
+     *     path="/api/socios/store",
+     *     operationId="storeSocios",
+     *     tags={"Socios"},
+     *     summary="Crear socio",
+     *     description="Almacena un nuevo recurso de socio en el almacenamiento.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="nombre", type="string", example="John"),
+     *             @OA\Property(property="apellidos", type="string", example="Doe")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Socio creado correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Socio creado correctamente")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error de validación")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error interno")
+     *         )
+     *     )
+     * )
+     *
      * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
@@ -87,7 +162,56 @@ class SociosController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza el recurso de socio especificado en el almacenamiento.
+     *
+     * @param Request $request
+     * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la actualización.
+     *
+     * @OA\Put(
+     *     path="/api/socios/update",
+     *     operationId="updateSocios",
+     *     tags={"Socios"},
+     *     summary="Actualizar socio",
+     *     description="Actualiza el recurso de socio especificado en el almacenamiento.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="socioId", type="integer", example="1"),
+     *             @OA\Property(property="nombre", type="string", example="John"),
+     *             @OA\Property(property="apellidos", type="string", example="Doe")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Socio actualizado correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Socio actualizado correctamente")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error de validación")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error interno")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Socio no encontrado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Socio no encontrado")
+     *         )
+     *     )
+     * )
+     *
+     * @return JsonResponse
      */
     public function update(Request $request): JsonResponse
     {
@@ -120,7 +244,54 @@ class SociosController extends Controller
 
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina el recurso de socio especificado del almacenamiento.
+     *
+     * @param Request $request
+     * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la eliminación.
+     *
+     * @OA\Delete(
+     *     path="/api/socios/destroy",
+     *     operationId="destroySocios",
+     *     tags={"Socios"},
+     *     summary="Eliminar socio",
+     *     description="Elimina el recurso de socio especificado del almacenamiento.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example="1")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Socio eliminado correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Socio eliminado correctamente")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error de validación")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error interno")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Socio no encontrado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Socio no encontrado")
+     *         )
+     *     )
+     * )
+     *
+     * @return JsonResponse
      */
     public function destroy(Request $request): JsonResponse
     {

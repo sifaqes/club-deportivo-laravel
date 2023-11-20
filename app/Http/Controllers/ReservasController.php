@@ -11,12 +11,72 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use OpenApi\Annotations as OA;
+
+/**
+ * Class ReservasController
+ * @package App\Http\Controllers
+ * @OA\Server(url="http://localhost:8000")
+ */
 
 class ReservasController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
+     * Muestra una lista de recursos basada en la fecha especificada.
+     *
+     * @param Request $request
+     * @return JsonResponse Devuelve una respuesta JSON con la lista de reservas.
+     *
+     * @OA\Get(
+     *     path="/api/reservas",
+     *     operationId="indexReservas",
+     *     tags={"Reservas"},
+     *     summary="Listar reservas",
+     *     description="Muestra una lista de reservas basada en la fecha especificada.",
+     *     @OA\Parameter(
+     *         name="fecha",
+     *         in="query",
+     *         required=true,
+     *         description="Fecha en formato 'Y-m-d' (ejemplo: '2023-01-01')",
+     *         @OA\Schema(type="string", format="date")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Operación exitosa",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="reservas", type="array", @OA\Items(
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="reserva", type="array", @OA\Items(
+     *                     @OA\Property(property="socio", type="string"),
+     *                     @OA\Property(property="pista", type="string"),
+     *                     @OA\Property(property="deporte", type="string"),
+     *                     @OA\Property(property="fecha", type="string", format="date"),
+     *                     @OA\Property(property="horaInicio", type="string", format="time"),
+     *                     @OA\Property(property="horaFin", type="string", format="time")
+     *                 ))
+     *             ))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="El campo fecha debe tener el formato 'Y-m-d'.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error interno")
+     *         )
+     *     )
+     * )
+     *
+     * @return JsonResponse
      */
+
     public function index(Request $request): JsonResponse
     {
 
@@ -25,8 +85,6 @@ class ReservasController extends Controller
         ]);
 
         $fecha = $request->input('fecha');
-
-
 
         try {
 
@@ -60,8 +118,65 @@ class ReservasController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacena un nuevo recurso de reserva en el almacenamiento.
      *
+     * @param Request $request
+     * @return JsonResponse Devuelve una respuesta JSON indicando el éxito del almacenamiento.
+     *
+     * @OA\Post(
+     *     path="/api/reservas/store",
+     *     operationId="storeReservas",
+     *     tags={"Reservas"},
+     *     summary="Crear reserva",
+     *     description="Almacena un nuevo recurso de reserva en el almacenamiento.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="pista_id", type="integer", example="1"),
+     *             @OA\Property(property="horaInicio", type="string", example="08:00")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Reserva creada correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="reserva", type="array", @OA\Items(
+     *                 @OA\Property(property="user_id", type="integer"),
+     *                 @OA\Property(property="socio_id", type="integer"),
+     *                 @OA\Property(property="pista_id", type="integer"),
+     *                 @OA\Property(property="socio", type="string"),
+     *                 @OA\Property(property="pista", type="string"),
+     *                 @OA\Property(property="deporte", type="integer"),
+     *                 @OA\Property(property="fecha", type="string", format="date"),
+     *                 @OA\Property(property="horaInicio", type="string", format="time"),
+     *                 @OA\Property(property="horaFin", type="string", format="time")
+     *             ))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="La hora de inicio debe estar entre las 08:00 y las 22:00",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="La hora de inicio debe estar entre las 08:00 y las 22:00")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="No puedes realizar más de 3 reservas en un mismo día.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="No puedes realizar más de 3 reservas en un mismo día.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error interno")
+     *         )
+     *     )
+     * )
+     *
+     * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
@@ -146,13 +261,58 @@ class ReservasController extends Controller
         //
     }
 
-
     /**
-     * Update the specified resource in storage.
+     * Actualiza el recurso de reserva especificado en el almacenamiento.
      *
      * @param Request $request
+     * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la actualización.
+     *
+     * @OA\Patch(
+     *     path="/api/reservas/update",
+     *     operationId="updateReservas",
+     *     tags={"Reservas"},
+     *     summary="Actualizar reserva",
+     *     description="Actualiza el recurso de reserva especificado en el almacenamiento.",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="reservaId", type="integer", example="1"),
+     *             @OA\Property(property="nuevaHora", type="string", example="10:00")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Reserva actualizada correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Reserva actualizada a 10:00 con éxito.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No se encontró ninguna reserva para actualizar",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="No se encontró ninguna reserva para actualizar.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="El campo nuevaHora debe tener el formato 'H:00'.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error interno")
+     *         )
+     *     )
+     * )
+     *
      * @return JsonResponse
      */
+
     public function update(Request $request): JsonResponse
     {
 
@@ -188,10 +348,39 @@ class ReservasController extends Controller
         }
     }
 
-
     /**
-     * Remove the specified resource from storage.
+     * Elimina el recurso de reserva especificado del almacenamiento.
      *
+     * @return JsonResponse Devuelve una respuesta JSON indicando el éxito de la eliminación.
+     *
+     * @OA\Delete(
+     *     path="/api/reservas/destroy",
+     *     operationId="destroyReservas",
+     *     tags={"Reservas"},
+     *     summary="Eliminar reserva",
+     *     description="Elimina el recurso de reserva especificado del almacenamiento.",
+     *     @OA\Response(
+     *         response=201,
+     *         description="Reserva eliminada correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Reserva eliminada con éxito.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No se encontró ninguna reserva para eliminar",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="No se encontró ninguna reserva para eliminar.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Error interno del servidor",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Mensaje de error interno")
+     *         )
+     *     )
+     * )
      *
      * @return JsonResponse
      */
