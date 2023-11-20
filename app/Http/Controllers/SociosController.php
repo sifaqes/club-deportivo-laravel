@@ -62,7 +62,7 @@ class SociosController extends Controller
 
         }catch (Exception $e){
 
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
 
         }
     }
@@ -144,7 +144,7 @@ class SociosController extends Controller
 
         }catch (Exception $e){
 
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
 
         }
     }
@@ -242,7 +242,7 @@ class SociosController extends Controller
                 return response()->json(['message' => 'Socio actualizado correctamente'], 201);
         }   catch (Exception $e){
 
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
 
         }
 
@@ -313,10 +313,17 @@ class SociosController extends Controller
             Reserva::where('socio_id', $id)->delete();
         }
 
-        Socio::destroy($id);
+        try {
+            Socio::destroy($id);
 
-        Socio::where('id', $id)->delete();
+            Socio::where('id', $id)->delete();
 
-        return response()->json(['message' => 'Socio eliminado correctamente'], 201);
+            return response()->json(['message' => 'Socio eliminado correctamente'], 201);
+
+        } catch (Exception $e) {
+
+            return response()->json(['error' => $e->getMessage()], 500);
+
+        }
     }
 }
