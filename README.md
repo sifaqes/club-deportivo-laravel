@@ -55,6 +55,14 @@ El archivo de configuración se encuentra en:
 ## Diagrame
 <a href="https://github.com/sifaqes/prueba/blob/master/diagram.png"><img src="https://github.com/sifaqes/prueba/blob/master/diagram.png" alt="Diagrame"></a>
 
+## Endpoints
+
+### Postman
+
+<a href="https://github.com/sifaqes/prueba/blob/develop/doc/postman%20api.png"><img src="https://github.com/sifaqes/prueba/blob/develop/doc/postman%20api.png" alt="postaman"></a>
+
+
+
 
 ## About Laravel
 
