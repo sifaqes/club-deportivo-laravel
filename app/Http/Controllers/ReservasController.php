@@ -198,14 +198,13 @@ class ReservasController extends Controller
             'horaInicio' => 'required|date_format:H:00'
         ]);
 
-        // inputs
         $pistaId = $request->input('pista_id');
         $hora = $request->horaInicio;
 
         //User
         $userId = Auth::id();
 
-        // interval de tiempo
+        // interval de tiempo 08:00 - 22:00
         $horaInicio = intval(substr($hora, 0, 2));
         if ($horaInicio < 8 || $horaInicio > 22) {
             return response()->json(['error' => 'La hora de inicio debe estar entre las 08:00 y las 22:00'], 400);
@@ -216,6 +215,12 @@ class ReservasController extends Controller
         $reservasDiarias = Reserva::where('socio_id', $userId)->whereDate('horaInicio', now()->toDateString())->count();
         if ($reservasDiarias >= env('MAX_RESERVAS_DIA', 3)) {
             return response()->json(['error' => 'No puedes realizar más de 3 reservas en un mismo día.'], 422);
+        }
+
+        // comprobar si la reserva ya existe
+        $reserva = Reserva::where('pista_id', $pistaId)->where('horaInicio', $hora)->first();
+        if ($reserva) {
+            return response()->json(['error' => 'Ya existe una reserva para la pista seleccionada a la hora indicada.'], 422);
         }
 
         try {
