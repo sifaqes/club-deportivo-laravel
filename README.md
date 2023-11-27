@@ -58,13 +58,17 @@ El archivo de configuración se encuentra en:
 - Configuracion de maximas reservas por dia
 
 
+
     MAX_RESERVAS_DIA=3
+
 
 - Configuracion Apertura y cierre de la cancha
 
 
+
     HORA_APERTURA=08
     HORA_CIERRE=23
+
 
 - Configuracion de la api de l5-swagger
 
@@ -72,11 +76,13 @@ El archivo de configuración se encuentra en:
     HOST_API=http://localhost:8000
     L5_SWAGGER_CONST_HOST=http://localhost:8000
 
+
 - Configuracion de base de datos
 
 
     DB_CONNECTION=mysql
     DB_HOST=deporte
+
 
 ## Diagrame
 <a href="https://github.com/sifaqes/prueba/blob/master/diagram.png"><img src="https://github.com/sifaqes/prueba/blob/master/diagram.png" alt="Diagrame"></a>
