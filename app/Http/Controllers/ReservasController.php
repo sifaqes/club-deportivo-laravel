@@ -212,7 +212,7 @@ class ReservasController extends Controller
 
         // interval de tiempo 08:00 - 22:00
         $horaInicio = intval(substr($hora, 0, 2));
-        if ($horaInicio < 8 || $horaInicio > 22) {
+        if ($horaInicio < env('HORA_APERTURA',8) || $horaInicio > env('HORA_CIERRE',22) ) {
             return response()->json(['error' => 'La hora de inicio debe estar entre las 08:00 y las 22:00'], 400);
         }
 
