@@ -1328,7 +1328,7 @@
                                             "type": "array",
                                             "items": {
                                                 "properties": {
-                                                    "user_id": {
+                                                    "userId": {
                                                         "type": "integer"
                                                     },
                                                     "socio_id": {

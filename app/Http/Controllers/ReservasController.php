@@ -153,7 +153,7 @@ class ReservasController extends Controller
      *         description="Reserva creada correctamente",
      *         @OA\JsonContent(
      *             @OA\Property(property="reserva", type="array", @OA\Items(
-     *                 @OA\Property(property="user_id", type="integer"),
+     *                 @OA\Property(property="userId", type="integer"),
      *                 @OA\Property(property="socio_id", type="integer"),
      *                 @OA\Property(property="pista_id", type="integer"),
      *                 @OA\Property(property="socio", type="string"),
@@ -204,6 +204,14 @@ class ReservasController extends Controller
         //User
         $userId = Auth::id();
 
+
+        // comprobar si la hora de reserva no ha pasado
+        $horaActual = date('H:00');
+        if ($hora < $horaActual) {
+            return response()->json(['error' => 'La hora de reserva no puede ser anterior a la hora actual '.$horaActual], 422);
+        }
+
+
         // interval de tiempo 08:00 - 22:00
         $horaInicio = intval(substr($hora, 0, 2));
         if ($horaInicio < env('HORA_APERTURA',8) || $horaInicio > env('HORA_CIERRE',22) ) {
@@ -242,7 +250,7 @@ class ReservasController extends Controller
             $horaFin = Carbon::createFromFormat('H:i', $horaInicio)->addHour()->format('H:i');
 
             $reserva = [
-                'user_id'=>$userId,
+                'userId'=>$userId,
                 'socio_id' => $socioId,
                 'pista_id' => $pistaId,
                 'socio' => $socioNombre . ' ' . $socioApellidos,
