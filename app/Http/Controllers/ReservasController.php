@@ -204,6 +204,12 @@ class ReservasController extends Controller
         //User
         $userId = Auth::id();
 
+        // comprobar si la hora de reserva no ha pasado
+        $horaActual = date('H:00');
+        if ($hora < $horaActual) {
+            return response()->json(['error' => 'La hora de reserva no puede ser anterior a la hora actual '.$horaActual], 422);
+        }
+
         // interval de tiempo 08:00 - 22:00
         $horaInicio = intval(substr($hora, 0, 2));
         if ($horaInicio < 8 || $horaInicio > 22) {
