@@ -153,7 +153,7 @@ class ReservasController extends Controller
      *         description="Reserva creada correctamente",
      *         @OA\JsonContent(
      *             @OA\Property(property="reserva", type="array", @OA\Items(
-     *                 @OA\Property(property="user_id", type="integer"),
+     *                 @OA\Property(property="userId", type="integer"),
      *                 @OA\Property(property="socio_id", type="integer"),
      *                 @OA\Property(property="pista_id", type="integer"),
      *                 @OA\Property(property="socio", type="string"),
@@ -248,7 +248,7 @@ class ReservasController extends Controller
             $horaFin = Carbon::createFromFormat('H:i', $horaInicio)->addHour()->format('H:i');
 
             $reserva = [
-                'user_id'=>$userId,
+                'userId'=>$userId,
                 'socio_id' => $socioId,
                 'pista_id' => $pistaId,
                 'socio' => $socioNombre . ' ' . $socioApellidos,

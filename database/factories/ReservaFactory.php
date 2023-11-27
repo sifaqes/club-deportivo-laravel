@@ -40,7 +40,7 @@ class ReservaFactory extends Factory
         return [
             'socio_id' => $socios->id,
             'pista_id' => $pistas->id,
-            'user_id' => $users->random()->id,
+            'userId' => $users->random()->id,
             'socio' => $socios->nombre,
             'pista' => $pistas->pista,
             'deporte' => $deporte,

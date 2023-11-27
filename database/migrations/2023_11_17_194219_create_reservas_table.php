@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('socio_id')->constrained();
             $table->foreignId('pista_id')->constrained();
 
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('userId')->constrained('users');
 
             $table->string('socio')->references('id')->on('socios');
             $table->string('pista')->references('id')->on('pistas');

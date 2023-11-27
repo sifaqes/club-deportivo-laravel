@@ -16,7 +16,7 @@ class Reserva extends Model
     use HasFactory;
     // Relation con Socio
     protected $fillable = [
-        'user_id',
+        'userId',
         'socio_id',
         'pista_id',
         'socio',
