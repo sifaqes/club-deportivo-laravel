@@ -9,9 +9,10 @@
 
 
 ## Instalación
-clon el repositorio
+Primiramente debe tener instalado el motor de base de datos Mysql y el gestor de paquetes composer.
+Luego debe clonar el repositorio
 
-    git clone
+    git clone <url.git>
 
 luegho ingrese a la carpeta
 
@@ -51,6 +52,31 @@ El archivo de configuración se encuentra en:
 ## Ejecutar el proyecto
 
     php artisan serve
+
+## Configuracion de enviroment variables
+
+- Configuracion de maximas reservas por dia
+
+
+    MAX_RESERVAS_DIA=3
+
+- Configuracion Apertura y cierre de la cancha
+
+
+    HORA_APERTURA=08
+    HORA_CIERRE=23
+
+- Configuracion de la api de l5-swagger
+
+
+    HOST_API=http://localhost:8000
+    L5_SWAGGER_CONST_HOST=http://localhost:8000
+
+- Configuracion de base de datos
+
+
+    DB_CONNECTION=mysql
+    DB_HOST=deporte
 
 ## Diagrame
 <a href="https://github.com/sifaqes/prueba/blob/master/diagram.png"><img src="https://github.com/sifaqes/prueba/blob/master/diagram.png" alt="Diagrame"></a>
