@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
@@ -55,27 +57,23 @@ class AuthController extends Controller
      *             @OA\Property(property="token", type="string", example="token_de_autenticacion")
      *         )
      *     ),
-
      * )
      *
-     * @param Request $request
+     * @param RegisterRequest $request
      * @return JsonResponse
      */
-    public function register(Request $request): JsonResponse
+    public function register(RegisterRequest $request): JsonResponse
     {
 
-        $validator = Validator::make($request->all(),[
-            'email'=>'required|string|email|max:255|unique:users',
-            'password'=>'required|string|confirmed|min:8'
-        ]);
+        $validator = Validator::make($request->all(), $request->rules());
 
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(),400);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
         }
 
         $user = User::create([
-            'email'=>$request->get('email'),
-            'password'=>Hash::make($request->get('password'))
+            'email'=>$request->input('email'),
+            'password'=>Hash::make($request->input('password'))
         ]);
 
         $token = $user-> createToken('auth_token')->plainTextToken;
@@ -116,11 +114,11 @@ class AuthController extends Controller
      *     ),
      * )
      *
-     * @param Request $request
+     * @param LoginRequest $request
      * @return JsonResponse
      */
 
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json(['message' => 'Detalles de inicio de sesión no válidos'], 401);

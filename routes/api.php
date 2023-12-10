@@ -5,6 +5,7 @@ use App\Http\Controllers\DeportesController;
 use App\Http\Controllers\PistasController;
 use App\Http\Controllers\ReservasController;
 use App\Http\Controllers\SociosController;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +21,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('login',[AuthController::class,'login']);
+
 Route::post('register',[AuthController::class,'register']);
+
 
 Route::middleware('auth:sanctum')->group( function (){
 
